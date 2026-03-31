@@ -1,0 +1,27 @@
+@font-face {
+  font-family: Gilroy;
+  src: url(https://media-assets.swiggy.com/dls-web-assets/dls/fonts/Gilroy-ExtraBold.woff2) format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: arial, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  height: 100%;
+  font-weight: 200;
+  color: #02060c;
+}

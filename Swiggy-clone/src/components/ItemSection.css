@@ -1,0 +1,58 @@
+.items-section {
+  width: 80%;
+  margin: 100px auto;
+}
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.items-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(2, 6, 12, 0.92);
+}
+
+.arrow-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.arrow-btn {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(2, 6, 12, 0.1);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.scroll-wrapper {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.row {
+  display: flex;
+  gap: 24px;
+  min-width: max-content;
+  margin-bottom: 20px;
+}
+
+.item-card {
+  min-width: 144px;
+}
+
+.item-card img {
+  width: 144px;
+  height: 180px;
+  object-fit: contain;
+}

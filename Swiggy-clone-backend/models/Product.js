@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+
+const ProductSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  image: String,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category"
+  },
+  restaurant: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Restaurant"
+  }
+});
+
+module.exports = mongoose.model("Product", ProductSchema);

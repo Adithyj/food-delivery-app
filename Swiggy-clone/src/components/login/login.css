@@ -1,0 +1,150 @@
+*{
+    align-items: center;
+    text-align: center;
+
+}
+
+#login{
+    text-align: center;
+    margin-top: 10px;
+    position:relative;
+   
+    
+}
+
+#login a{
+    text-decoration: none;
+    color: blue;
+    font-weight: 500;
+}
+
+#formdiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    
+}
+#gap{
+    text-align: center;
+}
+
+.main{
+    display:flex;
+    flex-direction: column;   
+    color:black
+   
+    
+}
+.main div{
+    padding: 10px;
+}
+
+.lg1{
+    font-weight: 400;
+    color:rgb(202, 15, 15)
+}
+
+.sign{
+    display: flex;
+    flex-direction:row;
+   justify-content: center;
+   
+}
+input{
+    color: black;
+    left: 20%;
+    height: auto;
+    padding: 0px 20px;
+    padding-top: 22px;
+    outline: none;
+    width: 100%;
+    border: 0px snow;
+    justify-content: left;
+    background-color: white;
+}
+#para{
+    font-size: small;
+    width: 1500px;
+    
+}
+
+.phone
+{
+    border-bottom: 0;
+    display: flex;
+    justify-content: left;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   justify-content: center;
+    height: 300px;
+}
+.form div{
+    padding: 10px;
+}
+.name
+{
+    display: flex;
+    justify-content: left;
+    border-bottom: 0;
+}
+
+.gap
+{
+    padding: 10px;
+}
+label.lab{
+    position: absolute;
+    left: 15%;
+    font-size: small;
+    width: 30%;
+    color: grey;
+    font-weight: 500;
+    background-color: white;
+    padding: 0px 0px;
+    transform: translate(-50%, -50%);
+}
+
+label.lab1{
+    position: absolute;
+    left: 10%;
+    font-size: small;
+    width: 10%;
+    color: grey;
+    font-weight: 500;
+    background-color: white;
+    padding: 5px 5px;
+    transform: translate(-50%, -50%);
+}
+
+.input {
+    position: relative;
+    width: 390px;
+    border: 1px solid rgba(2,6,12,.2);
+    display: flex;
+    align-items: center;
+    background: #fff;
+}
+
+.input:not(:last-child) {
+    border-bottom: 0;
+}
+
+.input input {
+    text-align: left;
+}
+
+.input label {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    font-size: 12px;
+    color: #7e808c;
+    pointer-events: none;
+    background: #fff;
+}

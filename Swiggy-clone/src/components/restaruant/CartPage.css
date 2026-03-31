@@ -1,0 +1,99 @@
+.Item-box{
+    min-height: 100px;
+    padding: 40px 80px;
+    width: 60%;
+    margin-left: 300px;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    background-color: rgb(245, 248, 250);
+    
+}
+.item-box1 img{
+   height: 70%;
+    width: 70%;
+    border-radius: 10px;
+    
+    
+}
+.item-box1{
+    flex:0.3;
+    height:100%;
+}
+.item-box2{
+    flex:0.4;
+    height: 100%;
+}
+
+.item-box2 h3{
+    text-align: left;
+    
+    
+    font-family:  sans-serif;
+}
+
+.item-box2 p{
+    text-align: left;
+    padding-left: 30px;
+    padding-bottom: 12px;
+}
+
+
+
+
+
+.item-box3{
+   flex:0.4;
+   display: flex;
+   flex-direction: column;
+}
+.item-box3 button{
+    width: 60%;
+    height: 40px;
+    margin-bottom: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+
+.item-box3 .buy-btn{
+    background-color: rgb(113, 173, 22);
+    color:white;
+    border:none;
+}
+
+.item-box3 .delete-btn{
+    background-color: rgb(237, 87, 5);
+}
+
+
+.popup-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000;
+  font-weight: bold;
+}
+
+
+.popup-toast.success {
+  background-color: #4caf50;
+}
+
+
+.popup-toast.error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

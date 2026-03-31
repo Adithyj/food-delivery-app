@@ -1,0 +1,81 @@
+.admin-orders{
+padding:30px;
+font-family:sans-serif;
+}
+
+.admin-orders h1{
+margin-bottom:20px;
+}
+
+/* 🔥 FILTERS */
+.filters{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.filters input,
+.filters select{
+padding:8px 10px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+.filters button{
+padding:8px 15px;
+background:#ff5200;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* 🔥 TABLE */
+.orders-table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+.orders-table th,
+.orders-table td{
+border:1px solid #ddd;
+padding:12px;
+text-align:left;
+}
+
+.orders-table th{
+background:#f5f5f5;
+}
+
+/* 🔥 STATUS BADGES */
+.status{
+padding:5px 10px;
+border-radius:6px;
+font-size:12px;
+font-weight:bold;
+color:white;
+}
+
+/* COLORS */
+.status.placed{
+background:#007bff;
+}
+
+.status.preparing{
+background:#ffc107;
+color:black;
+}
+
+.status.out-for-delivery{
+background:#17a2b8;
+}
+
+.status.delivered{
+background:#28a745;
+}
+
+.status.cancelled{
+background:#dc3545;
+}

@@ -1,0 +1,182 @@
+@font-face {
+  font-family: Gilroy;
+  src: url("https://media-assets.swiggy.com/dls-web-assets/dls/fonts/Gilroy-ExtraBold.woff2")
+    format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero {
+  background: rgb(255, 82, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0px 32px;
+  position: relative;
+}
+
+.left-side-img,
+.right-side-img {
+  height: 450px;
+  width: 250px;
+  position: absolute;
+  top: 0;
+}
+
+.left-side-img {
+  left: 0;
+}
+
+.right-side-img {
+  right: 0;
+}
+
+.food-center-line {
+  width: 60%;
+  text-align: center;
+  margin: 0 auto;
+  color: #fff;
+  font-family: Gilroy, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 56px;
+}
+
+.div-for-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px auto 0;
+  width: 70%;
+}
+
+
+.search-bar-full {
+  padding-left: 16px;
+  width: 500px;
+}
+
+.search-bar {
+    flex:0.7;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1.5px solid rgba(2, 6, 12, 0.15);
+  position: relative;
+}
+
+.search-button {
+  padding-left: 16px;
+  font-size: 18px;
+  color: rgba(2, 6, 12, 0.45);
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  right: 16px;
+}
+
+.food-cards {
+  display: flex;
+  justify-content: center;
+  background: rgb(255, 82, 0);
+  padding: 0 8px;
+}
+
+.food-card-container {
+  display: flex;
+  overflow-x: auto;
+  max-width: 80%;
+  min-height: 320px;
+}
+
+.card1 {
+  width: 100%;
+}
+
+.card-a {
+  display: block;
+}
+
+.card-one-img {
+  width: 100%;
+  object-fit: contain;
+}
+.location-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 0 16px;
+  gap: 10px;
+  border: 1.5px solid rgba(2, 6, 12, 0.15);
+  height: 60px;
+  cursor: pointer;
+  flex: 0.4;
+}
+
+.location-input-container {
+  flex: 1;
+}
+
+.location-input {
+  width: 100%;
+  height: 58px;
+  border: none;
+  outline: none;
+  font-family: Gilroy, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  color: rgba(2, 6, 12, 0.6);
+  caret-color: #ff5200;
+  background: transparent;
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+.location-dropdown {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(2, 6, 12, 0.2);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 1px 10px rgba(40, 44, 63, 0.1);
+  z-index: 100;
+  padding: 10px 0;
+}
+
+.current-location {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(2, 6, 12, 0.1);
+}
+
+.current-location span {
+  font-family: Gilroy;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ff5200;
+}
+
+.current-location:hover {
+  background: rgba(255, 82, 0, 0.05);
+}
