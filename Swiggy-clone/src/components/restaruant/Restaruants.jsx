@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Restaurants() {
-
+  const API = process.env.API ;
   const { categoryName } = useParams();
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);
@@ -20,7 +20,7 @@ function Restaurants() {
       try {
 
         const res = await axios.get(
-          "http://localhost:8080/api/restaurants",
+          `${API}/api/restaurants`,
           {
             params: {
               category: categoryName,
@@ -78,7 +78,7 @@ function Restaurants() {
               <div className="card" key={r._id} onClick={() => navigate(`/restaurant/${r._id}`)}>
 
                 <img
-                  src={`http://localhost:8080/${r.image}`}
+                  src={`${API}/${r.image}`}
                   alt={r.name}
                 />
 

@@ -9,7 +9,7 @@ import chickenloli from "../../assets/chickenLolipop.png";
 import chicken from "../../assets/paneer.png";
 
 function RestaurantDetails() {
-
+  const API = process.env.API ;
   const { id } = useParams();
 
   const [restaurant, setRestaurant] = useState(null);
@@ -22,7 +22,7 @@ function RestaurantDetails() {
       try {
 
         const res = await axios.get(
-          `http://localhost:8080/api/restaurant/${id}`
+          `${API}/api/restaurant/${id}`
         );
 
         setRestaurant(res.data.restaurant);
@@ -169,7 +169,7 @@ function RestaurantDetails() {
               <div className="menu-img">
 
                 <img
-                  src={`http://localhost:8080/${item.image}`}
+                  src={`${API}/${item.image}`}
                   alt={item.name}
                 />
 

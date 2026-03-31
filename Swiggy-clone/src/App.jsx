@@ -46,11 +46,11 @@ function App() {
 
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="" element={<AdminDashboard />} />
-            <Route path="admin/users" element={<Users />} />
-            <Route path="admin/categories" element={<AdminCategories />} />
-            <Route path="admin/restaurants" element={<AdminRestaurants />} />
-            <Route path="admin/products" element={<AddProduct />} />
-            <Route path="admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
+            <Route path="/admin/restaurants" element={<AdminRestaurants />} />
+            <Route path="/admin/products" element={<AddProduct />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
           </Route>
         </Routes>
       </Elements>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Admin.css";
+import AdminLayout from "./AdminLayout";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -73,6 +74,8 @@ function Users() {
   
 
   return (
+    <> 
+    <AdminLayout/>
     <div>
       <div className="user-header">
         <h1>User Management</h1>
@@ -159,7 +162,8 @@ function Users() {
           </div>
         </div>)}
       
-    </div>
+    </div></>
+   
   );
 }
 

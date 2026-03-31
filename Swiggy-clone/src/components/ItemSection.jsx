@@ -7,6 +7,7 @@ function ItemsSection() {
   const [categories, setCategories] = useState([]);
   const scrollRef = useRef(null);
   const navigate = useNavigate();
+  const API = process.env.API ;
 
   useEffect(() => {
     fetchCategories();
@@ -14,7 +15,7 @@ function ItemsSection() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/categories");
+      const res = await axios.get(`${API}/api/categories`);
       setCategories(res.data);
     } catch (err) {
       console.log(err);
@@ -53,7 +54,7 @@ function ItemsSection() {
               onClick={() => navigate(`/category/${item.name}`)}
             >
               <img
-                src={`http://localhost:8080/${item.image}`}
+                src={`${API}/${item.image}`}
                 alt={item.name}
               />
             
@@ -69,7 +70,7 @@ function ItemsSection() {
               onClick={() => navigate(`/category/${item.name}`)}
             >
               <img
-                src={`http://localhost:8080/${item.image}`}
+                src={`${API}/${item.image}`}
                 alt={item.name}
               />
               

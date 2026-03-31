@@ -4,6 +4,7 @@ import "./CartPage.css";
 import { useNavigate } from "react-router-dom";
 
 function CartPage() {
+  const API = process.env.API ;
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ function CartPage() {
               <div className="Item-box" key={item._id}>
                 <div className="item-box1">
                   <img
-                    src={`http://localhost:8080/${item.image}`}
+                    src={`${API}/${item.image}`}
                     alt=""
                   />
                 </div>

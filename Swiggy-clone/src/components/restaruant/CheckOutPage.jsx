@@ -9,6 +9,7 @@ import axios from "axios";
 import "./CheckoutPage.css";
 
 function CheckOutPage() {
+  const API = process.env.API ;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,15 +42,15 @@ function CheckOutPage() {
     setLoading(true);
 
     try {
-      // 1️⃣ Create Payment Intent
+      
       const res = await axios.post(
-        "http://localhost:8080/payment-intent",
+        `${API}/payment-intent`,
         { amount: totalAmount * 100 }
       );
 
       const clientSecret = res.data.client_secret;
 
-      // 2️⃣ Confirm Payment
+      
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement)
@@ -63,14 +64,14 @@ function CheckOutPage() {
       }
 
       if (result.paymentIntent.status === "succeeded") {
-        // 3️⃣ Place Order AFTER payment
-        await axios.post("http://localhost:8080/api/order", {
+        
+        await axios.post(`${API}/api/order`, {
           userId: "699837b624ec359780bc62ea",
           restaurantId: items[0].restaurantId,
           items: items
         });
 
-        // ✅ FIX: remove ONLY purchased items
+        
         const existingCart =
           JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -99,7 +100,7 @@ function CheckOutPage() {
     <div className="checkout-container">
       <h2>Checkout</h2>
 
-      {/* ORDER SUMMARY */}
+      
       <div className="order-summary">
         {items.map((item) => (
           <div key={item._id} className="summary-item">
@@ -121,7 +122,7 @@ function CheckOutPage() {
         <h3 className="total">Total: ₹{totalAmount}</h3>
       </div>
 
-      {/* PAYMENT */}
+      
       <div className="payment-box">
         <h3>Card Details</h3>
 
