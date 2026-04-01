@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "./Login.css";
+import "./login.css";
 import Myimage from "../../assets/swiggyLog.png";
 
 function Login() {
