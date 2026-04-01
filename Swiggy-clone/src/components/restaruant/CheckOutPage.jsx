@@ -6,7 +6,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import axios from "axios";
-import "./CheckoutPage.css";
+import "./CheckOutPage.css";
 
 function CheckOutPage() {
   const API = import.meta.env.VITE_API ;
