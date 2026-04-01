@@ -125,7 +125,7 @@ function AdminRestaurants() {
   };
 
   return (
-    <div>
+    <div className="admin-restaurants-container">
       <div className="user-header">
         <h1>Restaurant Management</h1><br />
 

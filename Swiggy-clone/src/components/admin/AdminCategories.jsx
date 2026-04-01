@@ -108,7 +108,7 @@ function AdminCategories() {
   };
 
   return (
-    <div>
+    <div className="admin-categories-container">
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="user-header">

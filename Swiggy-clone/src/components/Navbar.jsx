@@ -1,6 +1,7 @@
 
 import "./Navbar.css";
 import logo from "../assets/SwiggynavLogo.png";
+import { Link } from "react-router-dom";
 function Navbar() {
 
    return (
@@ -15,7 +16,9 @@ function Navbar() {
                <a href="#">Swiggy Corporate</a>
                <a href="#">Partner with us</a>
                <a href="#" className="getapp">Get the App</a>
-               <button className="signin" >Sign in</button>
+               <button className="signin" as={Link} to="/signin">
+                 Sign in
+               </button>
             </div>
          </div>
       </header>);

@@ -96,7 +96,9 @@ td dad img
   align-items: center;
   margin-bottom: 20px;
 }
-
+.admin-restaurants-container{
+  margin-left: 250px;
+}
 
 .primary-btn {
   background: #ff6b00;

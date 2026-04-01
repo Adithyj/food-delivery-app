@@ -9,7 +9,9 @@
   box-sizing: border-box;
 }
 
-
+.admin-categories-container{
+  margin-left: 250px;;
+}
 .admin-categories .user-header {
   display: flex;
   justify-content: space-between;
