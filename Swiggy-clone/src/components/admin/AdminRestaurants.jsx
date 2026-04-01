@@ -20,7 +20,7 @@ function AdminRestaurants() {
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-
+  const API = import.meta.env.VITE_API ;
   const categoryOptions = categories.map(c => ({
     value: c._id,
     label: c.name
@@ -36,14 +36,14 @@ function AdminRestaurants() {
 
   const fetchRestaurants = async () => {
     const res = await axios.get(
-      "http://localhost:8080/api/admin/restaurants"
+      `${API}/api/admin/restaurants`
     );
     setRestaurants(res.data);
   };
 
   const fetchCategories = async () => {
     const res = await axios.get(
-      "http://localhost:8080/api/admin/categories"
+      `${API}/api/admin/categories`
     );
     setCategories(res.data);
   };
@@ -69,7 +69,7 @@ function AdminRestaurants() {
     restaurant.categories.map((c) => ({ value: c._id, label: c.name }))
   );
 
-    setPreview(`http://localhost:8080/${restaurant.image}`);
+    setPreview(`${API}/${restaurant.image}`);
     setEditingId(restaurant._id);
     setIsEditing(true);
     setShowModal(true);
@@ -103,12 +103,12 @@ function AdminRestaurants() {
 
     if (isEditing) {
       await axios.put(
-        `http://localhost:8080/api/admin/restaurants/${editingId}`,
+        `${API}/api/admin/restaurants/${editingId}`,
         formData
       );
     } else {
       await axios.post(
-        "http://localhost:8080/api/admin/restaurants",
+        `${API}/api/admin/restaurants`,
         formData
       );
     }
@@ -119,7 +119,7 @@ function AdminRestaurants() {
 
   const deleteRestaurant = async (id) => {
     await axios.delete(
-      `http://localhost:8080/api/admin/restaurants/${id}`
+      `${API}/api/admin/restaurants/${id}`
     );
     fetchRestaurants();
   };
@@ -159,7 +159,7 @@ function AdminRestaurants() {
             <tr key={r._id}>
               <td>
                 <img
-                  src={`http://localhost:8080/${r.image}`}
+                  src={`${API}/${r.image}`}
                   width="60"
                 />
               </td>

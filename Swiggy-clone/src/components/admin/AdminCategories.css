@@ -1,0 +1,140 @@
+body{
+ margin-left:250px;
+}
+
+.admin-categories {
+  padding: 20px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+.admin-categories .user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.admin-categories h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* BUTTON */
+.admin-categories .primary-btn {
+  background-color: #ff7a00;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.admin-categories .primary-btn:hover {
+  background-color: #e66900;
+}
+
+/* TABLE */
+.admin-categories .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-categories .admin-table th,
+.admin-categories .admin-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-categories .admin-table th {
+  background-color: #f1f3f5;
+  font-weight: 600;
+}
+
+.admin-categories img {
+  border-radius: 6px;
+}
+
+/* ACTION BUTTONS */
+.admin-categories .edit-btn {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-categories .delete-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* MODAL */
+.admin-categories .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-categories .modal {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.admin-categories .modal h2 {
+  margin-bottom: 10px;
+}
+
+/* FORM */
+.admin-categories .modal-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* MODAL BUTTONS */
+.admin-categories .modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.admin-categories .modal-actions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-categories .modal-actions button:first-child {
+  background: #ccc;
+}
+
+.admin-categories .modal-actions button:last-child {
+  background: #ff7a00;
+  color: white;
+}

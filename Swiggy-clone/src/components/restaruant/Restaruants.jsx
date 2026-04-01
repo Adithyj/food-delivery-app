@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Restaurants() {
-  const API = process.env.API ;
+  const API = import.meta.env.VITE_API ;
   const { categoryName } = useParams();
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);

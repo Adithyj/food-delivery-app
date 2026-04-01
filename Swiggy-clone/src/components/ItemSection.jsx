@@ -7,7 +7,7 @@ function ItemsSection() {
   const [categories, setCategories] = useState([]);
   const scrollRef = useRef(null);
   const navigate = useNavigate();
-  const API = process.env.API ;
+  const API = import.meta.env.VITE_API;
 
   useEffect(() => {
     fetchCategories();

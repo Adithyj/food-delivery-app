@@ -9,7 +9,7 @@ import chickenloli from "../../assets/chickenLolipop.png";
 import chicken from "../../assets/paneer.png";
 
 function RestaurantDetails() {
-  const API = process.env.API ;
+  const API = import.meta.env.VITE_API ;
   const { id } = useParams();
 
   const [restaurant, setRestaurant] = useState(null);

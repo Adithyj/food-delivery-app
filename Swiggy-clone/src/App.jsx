@@ -1,5 +1,5 @@
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js"; // ✅ YOU MISSED THIS
+import { Elements } from "@stripe/react-stripe-js"; 
 
 import Login from "./components/login/login.jsx";
 import Signup from "./components/signin/PhoneLogin.jsx";
@@ -10,9 +10,7 @@ import CategoryPage from "./components/catogary/CategoryPage.jsx";
 import AdminLogin from "./components/admin/AdminLogin.jsx";
 import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import Restaurants from "./components/restaruant/Restaruants.jsx";
-import AddProduct from "./components/admin/AddProduct.jsx";
 import AdminLayout from "./components/admin/AdminLayout";
-import Dashboard from "./components/admin/Dashboard";
 import Users from "./components/admin/Users";
 import AdminCategories from "./components/admin/AdminCategories";
 import AdminRestaurants from "./components/admin/AdminRestaurants";
@@ -28,7 +26,7 @@ const stripePromise = loadStripe(
 function App() {
   return (
     <BrowserRouter>
-      {/* ✅ WRAP EVERYTHING */}
+
       <Elements stripe={stripePromise}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -45,13 +43,14 @@ function App() {
           <Route path="/adminlog" element={<AdminLogin />} />
 
           <Route path="/admin" element={<AdminLayout />}>
-            <Route path="" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<Users />} />
-            <Route path="/admin/categories" element={<AdminCategories />} />
-            <Route path="/admin/restaurants" element={<AdminRestaurants />} />
-            <Route path="/admin/products" element={<AddProduct />} />
-            <Route path="/admin/orders" element={<AdminOrders />} />
-          </Route>
+  <Route index element={<AdminDashboard />} />
+  <Route path="users" element={<Users />} />
+  <Route path="categories" element={<AdminCategories />} />
+  <Route path="restaurants" element={<AdminRestaurants />} />
+  
+  <Route path="orders" element={<AdminOrders />} />
+</Route>
+          
         </Routes>
       </Elements>
     </BrowserRouter>

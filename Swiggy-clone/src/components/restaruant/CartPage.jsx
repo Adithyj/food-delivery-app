@@ -4,7 +4,7 @@ import "./CartPage.css";
 import { useNavigate } from "react-router-dom";
 
 function CartPage() {
-  const API = process.env.API ;
+  const API = import.meta.env.VITE_API ;
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
 

@@ -5,6 +5,7 @@ import Myimage from "../../assets/swiggyLog.png";
 
 function Login() {
 
+    const API = process.env.API ;   
     const [formData, setFormData] = useState({
         phone: "",
         name: "",
@@ -25,7 +26,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/api/auth/signup",
+                `${API}/api/auth/signup`,
                 formData
             );
 

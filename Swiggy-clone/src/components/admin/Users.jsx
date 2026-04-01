@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Admin.css";
+import "./Users.css";
 import AdminLayout from "./AdminLayout";
 
 function Users() {
+  const API = import.meta.env.VITE_API ;
   const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -20,7 +21,7 @@ function Users() {
   }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get("http://localhost:8080/api/admin/users");
+    const res = await axios.get(`${API}/api/admin/users`);
     setUsers(res.data);
   };
 
@@ -50,12 +51,12 @@ function Users() {
 
     if (isEditing) {
       await axios.put(
-        `http://localhost:8080/api/admin/users/${editingId}`,
+        `${API}/api/admin/users/${editingId}`,
         form
       );
     } else {
       await axios.post(
-        "http://localhost:8080/api/admin/users",
+        `${API}/api/admin/users`,
         form
       );
     }
@@ -66,7 +67,7 @@ function Users() {
 
   const deleteUser = async (id) => {
     await axios.delete(
-      `http://localhost:8080/api/admin/users/${id}`
+      `${API}/api/admin/users/${id}`
     );
     fetchUsers();
   };

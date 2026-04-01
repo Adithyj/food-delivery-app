@@ -1,14 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import "./Admin.css";
+import { Outlet } from "react-router-dom";
+import "./AdminLayout.css";
 
-function AdminLayout({ children }) {
+function AdminLayout() {
   return (
     <div className="admin-layout">
       <Sidebar />
       <div className="admin-content">
-        {children}
+        <Outlet />
       </div>
     </div>
   );

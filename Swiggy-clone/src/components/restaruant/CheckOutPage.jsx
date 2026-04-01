@@ -9,7 +9,7 @@ import axios from "axios";
 import "./CheckoutPage.css";
 
 function CheckOutPage() {
-  const API = process.env.API ;
+  const API = import.meta.env.VITE_API ;
   const location = useLocation();
   const navigate = useNavigate();
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Admin.css";
+import "./AdminCategories.css";
 
 import TablePagination from "@mui/material/TablePagination";
 
@@ -12,7 +12,7 @@ function AdminCategories() {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
-
+  const API = import.meta.env.VITE_API ;
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -43,7 +43,7 @@ function AdminCategories() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/admin/categories");
+      const res = await axios.get(`${API}/api/admin/categories`);
       setCategories(res.data);
     } catch {
       notifyFail();
@@ -60,7 +60,7 @@ function AdminCategories() {
 
   const openEditModal = (category) => {
     setName(category.name);
-    setPreview(`http://localhost:8080/${category.image}`);
+    setPreview(`${API}/${category.image}`);
     setEditingId(category._id);
     setIsEditing(true);
     setShowModal(true);
@@ -79,12 +79,12 @@ function AdminCategories() {
     try {
       if (isEditing) {
         await axios.put(
-          `http://localhost:8080/api/admin/categories/${editingId}`,
+          `${API}/api/admin/categories/${editingId}`,
           formData
         );
       } else {
         await axios.post(
-          "http://localhost:8080/api/admin/categories",
+          `${API}/api/admin/categories`,
           formData
         );
       }
@@ -99,7 +99,7 @@ function AdminCategories() {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/admin/categories/${id}`);
+      await axios.delete(`${API}/api/admin/categories/${id}`);
       notifySuccess();
       fetchCategories();
     } catch {
@@ -135,7 +135,7 @@ function AdminCategories() {
               <tr key={c._id}>
                 <td>
                   <img
-                    src={`http://localhost:8080/${c.image}`}
+                    src={`${API}/${c.image}`}
                     alt={c.name}
                     width="60"
                   />

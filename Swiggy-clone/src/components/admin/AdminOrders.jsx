@@ -6,7 +6,7 @@ import "./AdminOrders.css";
 function AdminOrders() {
 
   const [orders, setOrders] = useState([]);
-
+  const API = import.meta.env.VITE_API ;
   const [filters, setFilters] = useState({
     userId: "",
     restaurantId: "",
@@ -21,7 +21,7 @@ function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/admin/orders",
+        `${API}/api/admin/orders`,
         { params: filters }
       );
       setOrders(res.data);
@@ -40,7 +40,7 @@ function AdminOrders() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:8080/api/admin/orders/${id}/status`,
+        `${API}/api/admin/orders/${id}/status`,
         { status }
       );
       fetchOrders();
