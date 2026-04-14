@@ -30,9 +30,10 @@ function ItemsSection() {
     scrollRef.current.scrollBy({ left: 450, behavior: "smooth" });
   };
 
-  
-  const firstRow = categories.slice(0, Math.ceil(categories.length / 2));
-  const secondRow = categories.slice(Math.ceil(categories.length / 2));
+  const categoryArray = Array.isArray(categories) ? categories : [];
+
+  const firstRow = categoryArray.slice(0, Math.ceil(categoryArray.length / 2));
+  const secondRow = categoryArray.slice(Math.ceil(categoryArray.length / 2));
 
   return (
     <div className="items-section">
@@ -57,7 +58,6 @@ function ItemsSection() {
                 src={`${API}/${item.image}`}
                 alt={item.name}
               />
-            
             </div>
           ))}
         </div>
@@ -73,7 +73,6 @@ function ItemsSection() {
                 src={`${API}/${item.image}`}
                 alt={item.name}
               />
-              
             </div>
           ))}
         </div>

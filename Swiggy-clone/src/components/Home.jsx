@@ -4,6 +4,7 @@ import ItemsSection from "./ItemSection";
 import InstamartCards from "./InstamartCards";
 import SwiggyImage from "./SwiggyImage";
 import Footer from "./Footer";
+import DineoutSection from "./DineoutSection";
 import "./Home.css";
 
 function Home(){
@@ -13,7 +14,9 @@ function Home(){
         <HeroSection />
         <ItemsSection />
         <InstamartCards />
+        <DineoutSection />
         <SwiggyImage />
+        
         <Footer />
         </>
     );
