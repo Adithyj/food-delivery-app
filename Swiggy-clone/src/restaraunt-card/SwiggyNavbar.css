@@ -1,0 +1,82 @@
+.swiggy-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 60px;
+  background: #ffffff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  height: 40px;
+  cursor: pointer;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.home {
+  font-weight: 700;
+  border-bottom: 2px solid black;
+}
+
+.loc-text {
+  color: #686b78;
+  font-size: 14px;
+}
+
+.arrow {
+  color: #fc8019;
+  font-size: 12px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-item {
+  font-size: 15px;
+  color: #3d4152;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-item:hover {
+  color: #fc8019;
+}
+
+.offers .new {
+  color: #fc8019;
+  font-size: 10px;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.cart {
+  display: flex;
+  align-items: center;
+}
+
+.cart-count {
+  border: 1px solid #000;
+  padding: 2px 6px;
+  margin-left: 5px;
+  font-size: 12px;
+}

@@ -9,7 +9,7 @@ import axios from "axios";
 import "./CheckOutPage.css";
 
 function CheckOutPage() {
-  const API = import.meta.env.VITE_API ;
+  const API = import.meta.env.VITE_API;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ function CheckOutPage() {
 
   const [loading, setLoading] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("user"));
   const items = location.state?.items || [];
 
   if (items.length === 0) {
@@ -31,26 +32,40 @@ function CheckOutPage() {
     );
   }
 
-  const totalAmount = items.reduce(
+  // ✅ STEP 1: Proper pricing (same as backend)
+  const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
+  const gst = subtotal * 0.18;
+  const totalAmount = subtotal + gst;
+
+  // cart key
+  const getCartKey = () => {
+    if (!user?._id) return "cart_guest";
+    return `cart_${user._id}`;
+  };
+
   const handlePayment = async () => {
     if (!stripe || !elements) return;
+
+    if (!user?._id) {
+      alert("Please login first");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      
+      // ✅ send GST-included amount
       const res = await axios.post(
         `${API}/payment-intent`,
-        { amount: totalAmount * 100 }
+        { amount: Math.round(totalAmount * 100) }
       );
 
       const clientSecret = res.data.client_secret;
 
-      
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardElement)
@@ -64,16 +79,16 @@ function CheckOutPage() {
       }
 
       if (result.paymentIntent.status === "succeeded") {
-        
+
         await axios.post(`${API}/api/order`, {
-          userId: "699837b624ec359780bc62ea",
+          userId: user._id,
           restaurantId: items[0].restaurantId,
           items: items
         });
 
-        
+        // ✅ remove purchased items from cart
         const existingCart =
-          JSON.parse(localStorage.getItem("cart")) || [];
+          JSON.parse(localStorage.getItem(getCartKey())) || [];
 
         const updatedCart = existingCart.filter(
           (cartItem) =>
@@ -82,12 +97,14 @@ function CheckOutPage() {
             )
         );
 
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        localStorage.setItem(getCartKey(), JSON.stringify(updatedCart));
+
+        window.dispatchEvent(new Event("cartUpdated"));
 
         alert("Payment successful & Order placed!");
-
         navigate("/cart");
       }
+
     } catch (err) {
       console.log(err);
       alert("Payment failed");
@@ -100,7 +117,7 @@ function CheckOutPage() {
     <div className="checkout-container">
       <h2>Checkout</h2>
 
-      
+      {/* ORDER SUMMARY */}
       <div className="order-summary">
         {items.map((item) => (
           <div key={item._id} className="summary-item">
@@ -119,10 +136,13 @@ function CheckOutPage() {
 
         <hr />
 
-        <h3 className="total">Total: ₹{totalAmount}</h3>
+        {/* ✅ NEW BREAKDOWN */}
+        <h3>Subtotal: ₹{subtotal.toFixed(2)}</h3>
+        <h3>GST (18%): ₹{gst.toFixed(2)}</h3>
+        <h3 className="total">Total: ₹{totalAmount.toFixed(2)}</h3>
       </div>
 
-      
+      {/* PAYMENT */}
       <div className="payment-box">
         <h3>Card Details</h3>
 
@@ -135,7 +155,9 @@ function CheckOutPage() {
           disabled={loading}
           className="pay-btn"
         >
-          {loading ? "Processing..." : `Pay ₹${totalAmount}`}
+          {loading
+            ? "Processing..."
+            : `Pay ₹${totalAmount.toFixed(2)}`}
         </button>
       </div>
     </div>

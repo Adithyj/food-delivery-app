@@ -55,13 +55,36 @@ router.delete("/admin/users/:id", async (req, res) => {
 
 router.put("/admin/users/:id", async (req, res) => {
   try {
+    const { name, email, phone } = req.body;
+
+    
+    const emailExists = await User.findOne({
+      email,
+      _id: { $ne: req.params.id }
+    });
+
+    if (emailExists) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    
+    const phoneExists = await User.findOne({
+      phone,
+      _id: { $ne: req.params.id }
+    });
+
+    if (phoneExists) {
+      return res.status(400).json({ message: "Phone already in use" });
+    }
+
     const updated = await User.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { name, email, phone },
       { new: true }
     );
 
     res.json(updated);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

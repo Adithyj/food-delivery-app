@@ -71,6 +71,7 @@
 
 .search-button {
   padding-left: 16px;
+  margin-left:-36px;
   font-size: 18px;
   color: rgba(2, 6, 12, 0.45);
   width: 100%;
@@ -115,12 +116,12 @@
   border-radius: 16px;
   padding: 0 16px;
   gap: 10px;
+  
   border: 1.5px solid rgba(2, 6, 12, 0.15);
   height: 60px;
   cursor: pointer;
   flex: 0.4;
 }
-
 .location-input-container {
   flex: 1;
 }

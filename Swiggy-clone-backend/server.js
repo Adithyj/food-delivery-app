@@ -22,6 +22,7 @@ app.use("/api", require("./routes/adminRestaurant"));
 app.use("/api", require("./routes/adminProdcut"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api", require("./routes/adminMenu"));
+app.use("/api", require("./routes/userDashboard"));
 
 app.post("/payment-intent", async (req, res) => {
   const { amount } = req.body;

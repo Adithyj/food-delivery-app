@@ -9,7 +9,7 @@ function PhoneLogin() {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const API =import.meta.env.VITE_API;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -20,13 +20,13 @@ function PhoneLogin() {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/check-user", {
+      const res = await axios.post(`${API}/api/auth/check-user`, {
         phone
       });
 
       if (res.data.exists) {
         
-        await axios.post("http://localhost:8080/api/auth/send-otp", { phone });
+        await axios.post(`${API}/api/auth/send-otp`, { phone });
 
         navigate("/verify-otp", { state: { phone } });
       } else {

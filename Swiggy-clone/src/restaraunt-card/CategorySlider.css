@@ -1,0 +1,195 @@
+.category-section {
+  padding: 20px 0; /* remove side padding */
+}
+
+.category-inner {
+  margin: 0 150px;
+  padding-bottom:40px;
+  border-bottom: 1px solid rgba(2, 6, 12, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.arrows button {
+  border: none;
+  background: #eee;
+  margin-left: 10px;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.arrows button:hover {
+  background: #ddd;
+}
+
+.category-row {
+  display: flex;
+  gap: 37px; 
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  margin-top: 20px;
+}
+
+.category-row::-webkit-scrollbar {
+  display: none;
+}
+
+.category-card {
+  min-width: 140px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.category-card img {
+  width: 140px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.category-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #3d4152;
+}
+
+
+.restaurant-section {
+  padding: 20px 0;
+}
+
+.restaurant-inner {
+  margin: 0 150px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(2, 6, 12, 0.1);
+}
+
+
+
+.restaurant-row {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  margin-top: 20px;
+}
+
+.restaurant-row::-webkit-scrollbar {
+  display: none;
+}
+
+.restaurant-card {
+  min-width: 260px;
+  cursor: pointer;
+}
+
+.restaurant-card img {
+  width: 100%;
+  height: 180px;
+  border-radius: 15px;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+
+.restaurant-card:hover img {
+  transform: scale(1.05);
+}
+
+.rest-info {
+  padding: 10px 0;
+}
+
+.rest-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #02060c;
+  margin-left:-30px;
+}
+
+.rating {
+  font-size: 14px;
+  color: #02190e;
+  margin-top: 4px;
+  background-color: green;
+}
+
+.cuisine,
+.place {
+  font-size: 13px;
+  color: #686b78;
+  margin-top: 2px;
+}
+
+.all-restaurants-section {
+  padding: 20px 0;
+}
+
+.sort-bar {
+  margin: 15px 0;
+}
+
+.sort-bar select {
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+}
+
+
+.restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+
+.grid-card {
+  cursor: pointer;
+}
+
+.grid-card img {
+  width: 100%;
+  height: 180px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.swiggy-one img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.address-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: 300px;
+  margin-top: 20px;
+}
+
+.address-actions span {
+  margin-right: 15px;
+  color: #ff5200;
+  cursor: pointer;
+}
+
+.settings-box {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

@@ -6,10 +6,21 @@ import rightImg from "../assets/rightside.png";
 import searchIcon from "../assets/search-icon.png";
 import card1 from "../assets/card1.png";
 import card2 from "../assets/card2.png";
+import { useNavigate } from "react-router-dom";
 
 function HeroSection() {
   const [open, setOpen] = useState(false);
+  const [location, setLocation] = useState("");
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+ 
+  useEffect(() => {
+    const savedLocation = localStorage.getItem("location");
+    if (savedLocation) {
+      setLocation(savedLocation);
+    }
+  }, []);
 
  
   useEffect(() => {
@@ -24,6 +35,28 @@ function HeroSection() {
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  
+  const handleCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coords = `${position.coords.latitude}, ${position.coords.longitude}`;
+
+        setLocation(coords);
+        localStorage.setItem("location", coords);
+
+        setOpen(false);
+      },
+      () => {
+        alert("Location permission denied");
+      }
+    );
+  };
+
   return (
     <>
       <div className="hero">
@@ -36,13 +69,14 @@ function HeroSection() {
         </div>
 
         <div className="div-for-search">
-         
+
+          
           <div
             className="location-wrapper"
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpen(true)} 
             ref={dropdownRef}
           >
-            
+
             <svg width="24" height="24" viewBox="0 0 18 23" fill="none">
               <path
                 fillRule="evenodd"
@@ -52,7 +86,6 @@ function HeroSection() {
               />
             </svg>
 
-          
             <div className="location-input-container">
               <input
                 type="text"
@@ -61,10 +94,12 @@ function HeroSection() {
                 placeholder="Enter your delivery location"
                 maxLength="30"
                 className="location-input"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                onClick={(e) => e.stopPropagation()} 
               />
             </div>
 
-          
             <svg
               width="20"
               height="20"
@@ -81,10 +116,15 @@ function HeroSection() {
               />
             </svg>
 
-           
             {open && (
-              <div className="location-dropdown">
-                <div className="current-location">
+              <div
+                className="location-dropdown"
+                onClick={(e) => e.stopPropagation()} 
+              >
+                <div
+                  className="current-location"
+                  onClick={handleCurrentLocation}
+                >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <circle
                       cx="12"
@@ -100,7 +140,7 @@ function HeroSection() {
             )}
           </div>
 
-        
+         
           <div className="search-bar-full">
             <div className="search-bar">
               <div className="search-button">
@@ -116,14 +156,15 @@ function HeroSection() {
         <img src={rightImg} className="right-side-img" alt="right illustration" />
       </div>
 
-     
       <div className="food-cards">
         <div className="food-card-container">
-          <div className="card1">
-            <a href="#" className="card-a">
-              <img src={card1} alt="card1" className="card-one-img" />
-            </a>
-          </div>
+          <div
+  className="card1"
+  onClick={() => navigate("/explore")}
+  style={{ cursor: "pointer" }}
+>
+  <img src={card1} alt="card1" className="card-one-img" />
+</div>
 
           <div className="card1">
             <a href="#" className="card-a">
@@ -134,6 +175,6 @@ function HeroSection() {
       </div>
     </>
   );
-};
+}
 
 export default HeroSection;

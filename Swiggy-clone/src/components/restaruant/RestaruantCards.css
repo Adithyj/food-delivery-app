@@ -13,7 +13,7 @@ margin-bottom:10px;
 }
 
 .page p{
-color:#555;
+
 font-size:16px;
 margin-bottom:20px;
 }
@@ -66,6 +66,9 @@ gap:30px;
 .card{
 cursor:pointer;
 transition:transform .2s;
+
+border: 1px solid #ccc;
+border-radius: 15px;
 }
 
 .card:hover{
@@ -83,7 +86,7 @@ border-radius:15px;
 }
 
 
-/* Card info */
+
 
 .card-info{
 margin-top:10px;
@@ -92,6 +95,7 @@ margin-top:10px;
 .card-info h3{
 font-size:18px;
 margin-bottom:5px;
+margin-left: revert-layer;
 }
 
 .rating{
@@ -104,6 +108,7 @@ color:#333;
 font-size:14px;
 color:#777;
 margin-top:3px;
+margin-left: -200px;
 }
 .star-icon {
   width: 24px;

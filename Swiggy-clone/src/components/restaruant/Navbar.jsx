@@ -27,6 +27,36 @@ function Navbar() {
 
   const handleLocation = () => setShowLocation(true);
   const closeLocation = () => setShowLocation(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const getCartKey = () => {
+    if (!user?._id) return "cart_guest";
+    return `cart_${user._id}`;
+  };
+
+  const updateCartCount = () => {
+    const cart =
+      JSON.parse(localStorage.getItem(getCartKey())) || [];
+
+    const totalItems = cart.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    setCartCount(totalItems);
+  };
+
+  updateCartCount();
+
+  
+  window.addEventListener("cartUpdated", updateCartCount);
+
+  return () => {
+    window.removeEventListener("cartUpdated", updateCartCount);
+  };
+}, []);
 
   return (
     <>
@@ -69,9 +99,13 @@ function Navbar() {
             <MdHelpOutline /> Help
           </div>
 
-          <div className="nav-item">
-            <BiUser /> Adithya
-          </div>
+        <div 
+  className="nav-item"
+  onClick={() => navigate("/account")}
+  style={{ cursor: "pointer" }}
+>
+  <BiUser /> {user?.name || "Profile"}
+</div>
 
           {/* ✅ CART BUTTON */}
           <div className="nav-item" onClick={() => navigate("/cart")}>

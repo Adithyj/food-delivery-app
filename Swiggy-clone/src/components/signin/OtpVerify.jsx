@@ -13,7 +13,7 @@ function OtpVerify() {
 
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
-
+  const API = import.meta.env.VITE_API;
   const handleVerify = async (e) => {
     e.preventDefault();
     setError("");
@@ -24,14 +24,19 @@ function OtpVerify() {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/verify-otp", {
+      const res = await axios.post(`${API}/api/auth/verify-otp`, {
         phone,
         otp,
       });
       console.log(res.data);
       if (res.data.success) {
-        navigate("/home");
-      } else {
+
+ 
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+
+  
+  window.location.href = "/";
+}else {
         setError("Invalid OTP");
       }
     } catch (err) {

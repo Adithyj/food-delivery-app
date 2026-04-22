@@ -74,11 +74,11 @@ await transporter.sendMail(info).then((info) => {
 router.post("/verify-otp", async (req, res) => {
   try {
     const { phone, otp } = req.body;
-    console.log(phone, otp);
+
     const user = await User.findOne({ phone });
 
     if (!user) {
-      return res.json({ success: false });
+      return res.json({ success: false, message: "User not found" });
     }
 
     if (user.otp !== otp) {
@@ -89,12 +89,20 @@ router.post("/verify-otp", async (req, res) => {
       return res.json({ success: false, message: "OTP expired" });
     }
 
-   
     user.otp = null;
     user.otpExpires = null;
     await user.save();
 
-    res.json({ success: true });
+  
+    res.json({
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email
+      }
+    });
 
   } catch (error) {
     res.status(500).json({ success: false });

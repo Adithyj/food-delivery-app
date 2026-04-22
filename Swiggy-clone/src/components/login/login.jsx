@@ -5,7 +5,7 @@ import Myimage from "../../assets/swiggyLog.png";
 
 function Login() {
 
-    const API = process.env.API ;   
+    const API = import.meta.env.VITE_API ;   
     const [formData, setFormData] = useState({
         phone: "",
         name: "",

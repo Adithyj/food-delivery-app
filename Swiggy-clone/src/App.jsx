@@ -21,7 +21,9 @@ import CheckOutPage from "./components/restaruant/CheckOutPage.jsx";
 import DineoutDetails from "./components/DineoutDetails.jsx";
 import RestaurantPhotos from "./components/RestaurantPhotos.jsx";
 import RestaurantMenu from "./components/RestaurantMenu.jsx";
-
+import CategorySlider from "./restaraunt-card/CategorySlider.jsx";
+import MyAccount from "./profile/MyAccount";
+import UserPanel from "./components/UserPanel.jsx";
 const stripePromise = loadStripe(
   "pk_test_51Qc1LIFlNATJ2G6NFyYOw3u4siqArjmyfq5QPniiRUsVT9MGhKcfYgGwIpMMWkVoOcl3fn0rNk91OqqY57tylBBJ0024trWydJ"
 );
@@ -33,6 +35,9 @@ function App() {
       <Elements stripe={stripePromise}>
         <Routes>
           <Route path="/" element={<Home />} />
+            <Route path="/account" element={<MyAccount />} />
+            <Route path="/userpanel" element={<UserPanel />} />
+          <Route path="/explore" element={<CategorySlider />} />
           <Route path="/login" element={<Signup />} />
           <Route path="/verify-otp" element={<OtpVerify />} />
           <Route path="/signup" element={<Login />} />
@@ -55,7 +60,6 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="categories" element={<AdminCategories />} />
             <Route path="restaurants" element={<AdminRestaurants />} />
-
             <Route path="orders" element={<AdminOrders />} />
 
 
