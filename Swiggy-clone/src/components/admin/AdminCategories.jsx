@@ -2,55 +2,40 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminCategories.css";
 
-import TablePagination from "@mui/material/TablePagination";
-
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 function AdminCategories() {
+  const API = import.meta.env.VITE_API;
+
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const API = import.meta.env.VITE_API ;
+
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
-
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const notifySuccess = () => {
-    toast.success("Successful!");
-  };
-
-  const notifyFail = () => {
-    toast.error("Error occurred");
+  // 🔥 FETCH
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${API}/api/admin/categories`);
+      setCategories(res.data);
+    } catch (err) {
+      console.log(err);
+      alert("Failed to load categories");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const res = await axios.get(`${API}/api/admin/categories`);
-      setCategories(res.data);
-    } catch {
-      notifyFail();
-    }
-  };
-
-  const openAddModal = () => {
+  // 🔥 ADD
+  const openAdd = () => {
     setName("");
     setImage(null);
     setPreview(null);
@@ -58,23 +43,25 @@ function AdminCategories() {
     setShowModal(true);
   };
 
-  const openEditModal = (category) => {
-    setName(category.name);
-    setPreview(`${API}/${category.image}`);
-    setEditingId(category._id);
+  // 🔥 EDIT
+  const openEdit = (cat) => {
+    setName(cat.name);
+    setPreview(`${API}/${cat.image}`);
+    setEditingId(cat._id);
     setIsEditing(true);
     setShowModal(true);
   };
 
+  // 🔥 SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name) return alert("Name required");
 
     const formData = new FormData();
     formData.append("name", name);
 
-    if (image) {
-      formData.append("image", image);
-    }
+    if (image) formData.append("image", image);
 
     try {
       if (isEditing) {
@@ -89,102 +76,99 @@ function AdminCategories() {
         );
       }
 
-      notifySuccess();
       setShowModal(false);
       fetchCategories();
-    } catch {
-      notifyFail();
+    } catch (err) {
+      console.log(err);
+      alert("Operation failed");
     }
   };
 
+  // 🔥 DELETE
   const deleteCategory = async (id) => {
+    if (!window.confirm("Delete this category?")) return;
+
     try {
       await axios.delete(`${API}/api/admin/categories/${id}`);
-      notifySuccess();
       fetchCategories();
-    } catch {
-      notifyFail();
+    } catch (err) {
+      console.log(err);
+      alert("Delete failed");
     }
   };
 
   return (
-    <div className="admin-categories-container">
-      <ToastContainer position="top-right" autoClose={3000} />
-
-      <div className="user-header">
+    <div className="categories-container">
+      <div className="categories-header">
         <h1>Food Management</h1>
-        
-      </div>
-      <button className="primary-btn" onClick={openAddModal}>
+
+        <button className="primary-btn" onClick={openAdd}>
           + Add Food
         </button>
+      </div>
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <table className="categories-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {categories
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((c) => (
-              <tr key={c._id}>
-                <td>
-                  <img
-                    src={`${API}/${c.image}`}
-                    alt={c.name}
-                    width="60"
-                  />
-                </td>
-
-                <td>{c.name}</td>
-
-                <td>
-                  <button
-                    className="edit-btn"
-                    onClick={() => openEditModal(c)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteCategory(c._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+          <tbody>
+            {categories.length === 0 ? (
+              <tr>
+                <td colSpan="3">No categories</td>
               </tr>
-            ))}
-        </tbody>
-      </table>
+            ) : (
+              categories.map((c) => (
+                <tr key={c._id}>
+                  <td>
+                    <img
+                      src={`${API}/${c.image}`}
+                      width="60"
+                    />
+                  </td>
 
-      <TablePagination
-        component="div"
-        count={categories.length}
-         page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[3, 10, 25]}
-        /> 
-      
+                  <td>{c.name}</td>
 
+                  <td>
+                    <button
+                      className="edit-btn"
+                      onClick={() => openEdit(c)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => deleteCategory(c._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      )}
+
+      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>{isEditing ? "Edit Category" : "Add Category"}</h2>
+            <h2>{isEditing ? "Edit Food" : "Add Food"}</h2>
 
-            <form onSubmit={handleSubmit} className="modal-form">
+            <form onSubmit={handleSubmit}>
               <input
-                placeholder="Category Name"
+                placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
               />
 
               <input
@@ -197,10 +181,10 @@ function AdminCategories() {
                 }}
               />
 
-              {preview && <img src={preview} alt="preview" width="100" />}
+              {preview && <img src={preview} width="100" />}
 
               <div className="modal-actions">
-                <button type="button" onClick={() => setShowModal(false)}>
+                <button onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
 

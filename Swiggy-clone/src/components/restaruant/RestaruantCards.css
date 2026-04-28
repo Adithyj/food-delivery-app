@@ -29,12 +29,14 @@ margin:20px 0 30px 0;
 
 .filters button,
 .filters select{
-padding:10px 16px;
-border-radius:20px;
-border:1px solid #ddd;
-background:white;
-cursor:pointer;
-font-size:14px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    color: black;
+    margin-top: -5px;
 }
 
 
@@ -108,7 +110,7 @@ color:#333;
 font-size:14px;
 color:#777;
 margin-top:3px;
-margin-left: -200px;
+
 }
 .star-icon {
   width: 24px;

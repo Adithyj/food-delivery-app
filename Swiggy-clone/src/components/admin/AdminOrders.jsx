@@ -1,52 +1,57 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AdminLayout from "./AdminLayout";
 import "./AdminOrders.css";
 
 function AdminOrders() {
   const API = import.meta.env.VITE_API;
 
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [filters, setFilters] = useState({
-    userId: "",
-    restaurantId: "",
-    itemId: "",
     status: ""
   });
 
-  
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [newStatus, setNewStatus] = useState("");
+
+  // 🔥 FETCH ORDERS
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get(`${API}/api/admin/orders`, {
+        params: filters
+      });
+
+      setOrders(res.data);
+    } catch (err) {
+      console.log(err);
+      alert("Failed to fetch orders");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
-  const fetchOrders = async () => {
-    try {
-      const res = await axios.get(`${API}/api/admin/orders`, {
-        params: filters
-      });
-      setOrders(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleChange = (e) => {
+  // 🔥 FILTER CHANGE
+  const handleFilterChange = (e) => {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value
     });
   };
 
-  // 🔥 open modal
+  // 🔥 OPEN MODAL
   const openModal = (order) => {
     setSelectedOrder(order);
-    setNewStatus(order.status);
+    setNewStatus(order.status || "Placed");
   };
 
-  // 🔥 update status
+  // 🔥 UPDATE STATUS
   const updateStatus = async () => {
     try {
       await axios.put(
@@ -56,26 +61,20 @@ function AdminOrders() {
 
       setSelectedOrder(null);
       fetchOrders();
-
     } catch (err) {
       console.log(err);
+      alert("Update failed");
     }
   };
 
   return (
-    <AdminLayout>
-      <div className="admin-orders">
-
+    <div className="orders-container">
+      <div className="orders-header">
         <h1>Order Management</h1>
 
-        {/* FILTERS */}
         <div className="filters">
-          <input name="userId" placeholder="User ID" onChange={handleChange} />
-          <input name="restaurantId" placeholder="Restaurant ID" onChange={handleChange} />
-          <input name="itemId" placeholder="Item ID" onChange={handleChange} />
-
-          <select name="status" onChange={handleChange}>
-            <option value="">All Status</option>
+          <select name="status" onChange={handleFilterChange}>
+            <option value="">All</option>
             <option value="Placed">Placed</option>
             <option value="Preparing">Preparing</option>
             <option value="Out for Delivery">Out for Delivery</option>
@@ -85,11 +84,16 @@ function AdminOrders() {
 
           <button onClick={fetchOrders}>Apply</button>
         </div>
+      </div>
 
-        {/* TABLE */}
+      {/* LOADING */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <table className="orders-table">
           <thead>
             <tr>
+              <th>Order</th>
               <th>User</th>
               <th>Restaurant</th>
               <th>Items</th>
@@ -99,90 +103,75 @@ function AdminOrders() {
             </tr>
           </thead>
 
-         <tbody>
-  {orders.length === 0 ? (
-    <tr>
-      <td colSpan="6" style={{ textAlign: "center" }}>
-        No Orders Found
-      </td>
-    </tr>
-  ) : (
-    orders.map((order) => (
-      <tr key={order._id}>
+          <tbody>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan="7">No Orders Found</td>
+              </tr>
+            ) : (
+              orders.map((o) => (
+                <tr key={o._id}>
+                  <td>{o._id.slice(-6)}</td>
 
-        <td>{order.userId}</td>
+                  <td>{o.userId?.name || "N/A"}</td>
 
-        <td>
-          {order.restaurantId && typeof order.restaurantId === "object"
-            ? order.restaurantId.name
-            : "N/A"}
-        </td>
+                  <td>{o.restaurantId?.name || "N/A"}</td>
 
-        <td>
-          {order.items?.map((item, index) => (
-            <div key={index}>
-              {item.name} x {item.quantity}
-            </div>
-          ))}
-        </td>
+                  <td>
+                    {o.items?.map((item, i) => (
+                      <div key={i}>
+                        {item.name} x {item.quantity}
+                      </div>
+                    ))}
+                  </td>
 
-        <td>₹{order.totalAmount}</td>
+                  <td>₹{o.totalAmount}</td>
 
-        <td>
-          <span
-            className={`status ${
-              order?.status
-                ? order.status.toLowerCase().replace(/ /g, "-")
-                : ""
-            }`}
-          >
-            {order?.status || "N/A"}
-          </span>
-        </td>
+                  <td>
+                    <span className={`status ${o.status?.toLowerCase().replace(/ /g, "-")}`}>
+                      {o.status}
+                    </span>
+                  </td>
 
-        <td>
-          <button onClick={() => openModal(order)}>
-            Update
-          </button>
-        </td>
-
-      </tr>
-    ))
-  )}
-</tbody>
+                  <td>
+                    <button onClick={() => openModal(o)}>
+                      Update
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
         </table>
+      )}
 
-       
-        {selectedOrder && (
-          <div className="modal-overlay">
-            <div className="modal">
+      {/* MODAL */}
+      {selectedOrder && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Update Status</h3>
 
-              <h3>Update Order Status</h3>
+            <p>Order ID: {selectedOrder._id.slice(-6)}</p>
 
-              <p>Order ID: {selectedOrder._id.slice(-6)}</p>
+            <select
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+            >
+              <option>Placed</option>
+              <option>Preparing</option>
+              <option>Out for Delivery</option>
+              <option>Delivered</option>
+              <option>Cancelled</option>
+            </select>
 
-              <select
-                value={newStatus}
-                onChange={(e) => setNewStatus(e.target.value)}
-              >
-                <option>Placed</option>
-                <option>Preparing</option>
-                <option>Out for Delivery</option>
-                <option>Delivered</option>
-                <option>Cancelled</option>
-              </select>
-
-              <div className="modal-actions">
-                <button onClick={updateStatus}>Update</button>
-                <button onClick={() => setSelectedOrder(null)}>Cancel</button>
-              </div>
-
+            <div className="modal-actions">
+              <button onClick={updateStatus}>Update</button>
+              <button onClick={() => setSelectedOrder(null)}>Cancel</button>
             </div>
           </div>
-        )}
-
-      </div>
-    </AdminLayout>
+        </div>
+      )}
+    </div>
   );
 }
 

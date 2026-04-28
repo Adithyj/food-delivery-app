@@ -3,42 +3,50 @@ const router = express.Router();
 const Restaurant = require("../models/Restaurant");
 const Category = require("../models/Category");
 
+
+// ✅ GET RESTAURANTS (FILTER + SORT)
 router.get("/restaurants", async (req, res) => {
   try {
     const { category, sort } = req.query;
 
     let query = {};
+    let sortOption = {};
 
+    // 🔥 CATEGORY FILTER
     if (category) {
       const cat = await Category.findOne({
         name: new RegExp(`^${category}$`, "i")
       });
 
-      if (cat) {
-        query.categories = cat._id;
-      } else {
-        return res.json([]); // category not found
+      if (!cat) {
+        return res.json([]);
       }
+
+      query.categories = cat._id;
     }
 
-    let restaurants = await Restaurant.find(query).populate("categories");
-
-    // sorting
+    // 🔥 SORTING (DB LEVEL)
     if (sort === "rating") {
-      restaurants.sort((a, b) => b.rating - a.rating);
+      sortOption.rating = -1; // highest first
     }
 
     if (sort === "delivery") {
-      restaurants.sort(
-        (a, b) => parseInt(a.deliveryTime) - parseInt(b.deliveryTime)
-      );
+      // ⚠️ assumes deliveryTime is numeric (recommended)
+      sortOption.deliveryTime = 1; // fastest first
     }
+
+    const restaurants = await Restaurant.find(query)
+      .populate("categories", "name image")
+      .select("name location rating deliveryTime image categories")
+      .sort(sortOption);
 
     res.json(restaurants);
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      message: "Failed to fetch restaurants",
+      error: err.message
+    });
   }
 });
 

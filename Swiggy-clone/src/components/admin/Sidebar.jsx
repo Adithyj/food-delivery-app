@@ -1,17 +1,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import "./AdminLayout.css";
 
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h2 className="logo">Admin Panel</h2>
+      <h2 className="logo">Admin</h2>
 
       <nav>
         <NavLink to="/admin" end>Dashboard</NavLink>
-        <NavLink to="/admin/users">User Management</NavLink>
-        <NavLink to="/admin/categories">Food Management</NavLink>
-        <NavLink to="/admin/restaurants">Restaurant Management</NavLink>
-        <NavLink to="/admin/products">Product Management</NavLink>
+        <NavLink to="/admin/users">Users</NavLink>
+        <NavLink to="/admin/categories">Food</NavLink>
+        <NavLink to="/admin/restaurants">Restaurants</NavLink>
         <NavLink to="/admin/orders">Orders</NavLink>
       </nav>
     </div>

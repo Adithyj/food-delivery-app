@@ -1,43 +1,46 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
-const upload = require("../middlewares/upload");
-const fs = require("fs");
 
 
+// ✅ CREATE PRODUCT
+router.post("/admin/products", async (req, res) => {
+  try {
+    const { name, price, category, restaurant, image } = req.body;
 
-router.post(
-  "/admin/products",
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      const { name, price, category, restaurant } = req.body;
-
-      const newProduct = new Product({
-        name,
-        price,
-        category,
-        restaurant,
-        image: req.file ? req.file.path : null
+    // 🔥 validation
+    if (!name || !price || !category || !restaurant || !image) {
+      return res.status(400).json({
+        message: "All fields including image URL are required"
       });
-
-      await newProduct.save();
-      res.json(newProduct);
-
-    } catch (err) {
-      res.status(500).json({ error: err.message });
     }
+
+    const product = new Product({
+      name,
+      price,
+      category,
+      restaurant,
+      image
+    });
+
+    await product.save();
+
+    res.status(201).json(product);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-);
+});
 
 
-
-
+// ✅ GET PRODUCTS BY RESTAURANT
 router.get("/admin/products/:restaurantId", async (req, res) => {
   try {
     const products = await Product.find({
       restaurant: req.params.restaurantId
-    }).populate("category restaurant");
+    })
+      .populate("category", "name")
+      .populate("restaurant", "name");
 
     res.json(products);
 
@@ -47,58 +50,49 @@ router.get("/admin/products/:restaurantId", async (req, res) => {
 });
 
 
+// ✅ UPDATE PRODUCT
+router.put("/admin/products/:id", async (req, res) => {
+  try {
+    const { name, price, category, restaurant, image } = req.body;
 
+    const product = await Product.findById(req.params.id);
 
-router.put(
-  "/admin/products/:id",
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      const product = await Product.findById(req.params.id);
-
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-
-      
-      if (req.file) {
-        if (product.image && fs.existsSync(product.image)) {
-          fs.unlinkSync(product.image);
-        }
-        product.image = req.file.path;
-      }
-
-      product.name = req.body.name || product.name;
-      product.price = req.body.price || product.price;
-      product.category = req.body.category || product.category;
-      product.restaurant = req.body.restaurant || product.restaurant;
-
-      await product.save();
-      res.json(product);
-
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found"
+      });
     }
+
+    // 🔥 safe updates
+    if (name) product.name = name;
+    if (price) product.price = price;
+    if (category) product.category = category;
+    if (restaurant) product.restaurant = restaurant;
+    if (image) product.image = image;
+
+    await product.save();
+
+    res.json(product);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-);
+});
 
 
-
-
+// ✅ DELETE PRODUCT
 router.delete("/admin/products/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    
-    if (product.image && fs.existsSync(product.image)) {
-      fs.unlinkSync(product.image);
+      return res.status(404).json({
+        message: "Product not found"
+      });
     }
 
     await product.deleteOne();
+
     res.json({ message: "Product deleted" });
 
   } catch (err) {
@@ -106,7 +100,10 @@ router.delete("/admin/products/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+
+/* ============================
+   ✅ PUBLIC ROUTE (USER SIDE)
+   ============================ */
 
 router.get("/products", async (req, res) => {
   try {
@@ -116,11 +113,15 @@ router.get("/products", async (req, res) => {
       return res.json([]);
     }
 
+    // 🔥 FIX: filter in DB, not JS
     const products = await Product.find()
-      .populate("category restaurant");
+      .populate("category", "name")
+      .populate("restaurant", "name");
 
     const filtered = products.filter(
-      (p) => p.category && p.category.name === category
+      (p) =>
+        p.category &&
+        p.category.name.toLowerCase() === category.toLowerCase()
     );
 
     res.json(filtered);
@@ -129,5 +130,6 @@ router.get("/products", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;

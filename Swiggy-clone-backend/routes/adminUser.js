@@ -3,23 +3,44 @@ const router = express.Router();
 const User = require("../models/User");
 
 
-
+// ✅ GET ALL USERS
 router.get("/admin/users", async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find()
+      .sort({ createdAt: -1 });
+
     res.json(users);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+
+// ✅ CREATE USER
 router.post("/admin/users", async (req, res) => {
   try {
     const { phone, name, email } = req.body;
 
-    const existing = await User.findOne({ phone });
-    if (existing) {
-      return res.status(400).json({ message: "User already exists" });
+    // 🔥 validation
+    if (!phone || !name || !email) {
+      return res.status(400).json({
+        message: "All fields are required"
+      });
+    }
+
+    const existingPhone = await User.findOne({ phone });
+    if (existingPhone) {
+      return res.status(400).json({
+        message: "Phone already exists"
+      });
+    }
+
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({
+        message: "Email already exists"
+      });
     }
 
     const newUser = new User({
@@ -29,7 +50,8 @@ router.post("/admin/users", async (req, res) => {
     });
 
     await newUser.save();
-    res.json(newUser);
+
+    res.status(201).json(newUser);
 
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,15 +59,75 @@ router.post("/admin/users", async (req, res) => {
 });
 
 
+// ✅ UPDATE USER
+router.put("/admin/users/:id", async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+
+    // 🔥 check email uniqueness
+    if (email) {
+      const emailExists = await User.findOne({
+        email,
+        _id: { $ne: req.params.id }
+      });
+
+      if (emailExists) {
+        return res.status(400).json({
+          message: "Email already in use"
+        });
+      }
+    }
+
+    // 🔥 check phone uniqueness
+    if (phone) {
+      const phoneExists = await User.findOne({
+        phone,
+        _id: { $ne: req.params.id }
+      });
+
+      if (phoneExists) {
+        return res.status(400).json({
+          message: "Phone already in use"
+        });
+      }
+    }
+
+    // 🔥 safe updates
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (phone) user.phone = phone;
+
+    await user.save();
+
+    res.json(user);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ✅ DELETE USER
 router.delete("/admin/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found"
+      });
     }
 
     await user.deleteOne();
+
     res.json({ message: "User deleted" });
 
   } catch (err) {
@@ -53,41 +135,5 @@ router.delete("/admin/users/:id", async (req, res) => {
   }
 });
 
-router.put("/admin/users/:id", async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
-
-    
-    const emailExists = await User.findOne({
-      email,
-      _id: { $ne: req.params.id }
-    });
-
-    if (emailExists) {
-      return res.status(400).json({ message: "Email already in use" });
-    }
-
-    
-    const phoneExists = await User.findOne({
-      phone,
-      _id: { $ne: req.params.id }
-    });
-
-    if (phoneExists) {
-      return res.status(400).json({ message: "Phone already in use" });
-    }
-
-    const updated = await User.findByIdAndUpdate(
-      req.params.id,
-      { name, email, phone },
-      { new: true }
-    );
-
-    res.json(updated);
-
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 module.exports = router;

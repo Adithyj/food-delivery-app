@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home.jsx";
 import CategoryPage from "./components/catogary/CategoryPage.jsx";
 import AdminLogin from "./components/admin/AdminLogin.jsx";
-import AdminDashboard from "./components/admin/AdminDashboard.jsx";
+import AdminDashboard from "./components/AdminDashboard.jsx";
 import Restaurants from "./components/restaruant/Restaruants.jsx";
 import AdminLayout from "./components/admin/AdminLayout";
 import Users from "./components/admin/Users";
@@ -41,6 +41,7 @@ function App() {
           <Route path="/login" element={<Signup />} />
           <Route path="/verify-otp" element={<OtpVerify />} />
           <Route path="/signup" element={<Login />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
 
           <Route path="/restaurant/:id" element={<RestaurantDetails />} />
           <Route path="/restaurant/:id/dineout" element={<DineoutDetails />} />

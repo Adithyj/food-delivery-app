@@ -140,10 +140,14 @@
   margin-bottom: 15px;
   text-align: left;
   border-radius: 8px;
+  border: 1px solid #ddd;
 }
 .order-list h3 {
   margin:-700px;
 } 
+  h3{
+  margin-left:0px;
+}
 .swiggy-one {
   max-width: 100%;
   max-height: 100%;;
@@ -183,4 +187,94 @@
 .swiggy-one-image img{
   width:100%;
   height: auto;
+}
+
+/* MODAL */
+.order-modal {
+  background: #fff;
+  width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* HEADER */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-total {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* STATUS */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: white;
+}
+
+.status-badge.placed { background: orange; }
+.status-badge.preparing { background: #ff9800; }
+.status-badge.out-for-delivery { background: #2196f3; }
+.status-badge.delivered { background: green; }
+.status-badge.cancelled { background: red; }
+
+/* ITEMS */
+.order-item-card {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.order-item-card img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-details h4 {
+  margin: 0;
+}
+
+.item-details p {
+  margin: 2px 0;
+  font-size: 13px;
+}
+
+
+.veg {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.veg.veg {
+  background: #e8f5e9;
+  color: green;
+}
+
+.veg.nonveg {
+  background: #fdecea;
+  color: red;
+}
+
+
+.close-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }

@@ -1,69 +1,95 @@
 import "./MyAccount.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRef } from "react";
 
-;
 function MyAccount() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const API = import.meta.env.VITE_API;
-    const [showModal, setShowModal] = useState(false);
-    const [showOrderModal, setShowOrderModal] = useState(false);
+    
+// ✅ stable user (prevents re-render issues)
+const [user, setUser] = useState(() =>
+  JSON.parse(localStorage.getItem("user"))
+);
 
-    const [formData, setFormData] = useState({
-        name: user?.name || "",
-        email: user?.email || "",
-        phone: user?.phone || ""
-    });
-    const [orders, setOrders] = useState([]);
-    const [activeTab, setActiveTab] = useState("orders");
-    useEffect(() => {
-        if (!user?._id) return;
+const API = import.meta.env.VITE_API;
 
-        const fetchOrders = async () => {
-            try {
-                const res = await axios.get(`${API}/api/orders/${user._id}`);
-                setOrders(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
+const [showModal, setShowModal] = useState(false);
+const [showOrderModal, setShowOrderModal] = useState(false);
+const [selectedOrder, setSelectedOrder] = useState(null);
 
-        fetchOrders();
-    }, [user]);
+const [formData, setFormData] = useState({
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || ""
+});
 
-    const handleUpdate = async () => {
+const [orders, setOrders] = useState([]);
+const [activeTab, setActiveTab] = useState("orders");
+
+// ✅ prevents multiple API calls (strict mode fix)
+const fetchedRef = useRef(false);
+
+useEffect(() => {
+    if (!user?._id || fetchedRef.current) return;
+
+    fetchedRef.current = true;
+
+    const fetchOrders = async () => {
         try {
-            const res = await axios.put(`${API}/api/admin/users/${user._id}`, formData);
-
-
-            localStorage.setItem("user", JSON.stringify(res.data));
-
-            alert("Profile updated");
-
-            setShowModal(false);
-            window.location.reload();
-
+            const res = await axios.get(`${API}/api/orders/${user._id}`);
+            setOrders(res.data);
         } catch (err) {
-            alert(err.response?.data?.message || "Update failed");
-        }
-    };
-    const cancelOrder = async (orderId) => {
-        try {
-            await axios.put(`${API}/api/orders/${orderId}/cancel`);
-
-            setOrders(prev =>
-                prev.map(order =>
-                    order._id === orderId
-                        ? { ...order, status: "Cancelled" }
-                        : order
-                )
-            );
-
-        } catch (err) {
-            alert(err.response?.data?.message || "Cancel failed");
+            console.log(err);
         }
     };
 
+    fetchOrders();
+}, [user?._id]);
+
+
+// ✅ open modal (no API call)
+const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setShowOrderModal(true);
+};
+
+
+// ✅ update profile (no reload)
+const handleUpdate = async () => {
+    try {
+        const res = await axios.put(
+            `${API}/api/admin/users/${user._id}`,
+            formData
+        );
+
+        localStorage.setItem("user", JSON.stringify(res.data));
+        setUser(res.data); // 🔥 important fix
+
+        alert("Profile updated");
+        setShowModal(false);
+
+    } catch (err) {
+        alert(err.response?.data?.message || "Update failed");
+    }
+};
+
+
+// ✅ cancel order
+const cancelOrder = async (orderId) => {
+    try {
+        await axios.put(`${API}/api/orders/${orderId}/cancel`);
+
+        setOrders(prev =>
+            prev.map(order =>
+                order._id === orderId
+                    ? { ...order, status: "Cancelled" }
+                    : order
+            )
+        );
+
+    } catch (err) {
+        alert(err.response?.data?.message || "Cancel failed");
+    }
+};
     return (
         <div className="account-wrapper">
 
@@ -190,8 +216,8 @@ function MyAccount() {
                                 <div className="orders-list">
                                     <h3>My Orders</h3>
                                     {orders.map((order) => (
-                                        <div className="order-card" key={order._id} onClick={() => setShowOrderModal(true)}>
-                                            <h4>Order #{order._id.slice(-6)}</h4>
+                                        <div className="order-card" key={order._id} onClick={() => handleOrderClick(order)}>
+                                            <h4>Order #{order._id}</h4>
                                             <p>
                                                 Status:
                                                 <span className={`status ${order.status.toLowerCase().replace(/ /g, "-")}`}>
@@ -204,7 +230,10 @@ function MyAccount() {
                                                 {order.status === "Placed" && (
                                                     <button
                                                         className="cancel-btn"
-                                                        onClick={() => cancelOrder(order._id)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            cancelOrder(order._id);
+                                                        }}
                                                     >
                                                         Cancel Order
                                                     </button>
@@ -216,20 +245,7 @@ function MyAccount() {
                                                     </p>
 
                                                 ))}
-                                                {showOrderModal && (
-                                                    <div className="modal-overlay">
-                                                        <div className="modal">
-                                                            <h3>Order #{order._id.slice(-6)}</h3>
 
-                                                            <p><order className="name">{order.name}</order></p>
-
-                                                            <div className="modal-buttons">
-                                                                <button onClick={handleUpdate}>Save</button>
-                                                                <button onClick={() => setShowModal(false)}>Cancel</button>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>)}
                                             </div>
                                         </div>
 
@@ -237,6 +253,69 @@ function MyAccount() {
                                 </div>
 
 
+
+                            )}
+                            {showOrderModal && selectedOrder && (
+                                <div className="modal-overlay">
+                                    <div className="order-modal">
+
+                                        <div className="order-header">
+                                            <h2>Order #{selectedOrder._id.slice(-6)}</h2>
+                                            <span className={`status-badge ${selectedOrder.status.toLowerCase().replace(/ /g, "-")}`}>
+                                                {selectedOrder.status}
+                                            </span>
+                                        </div>
+
+                                        <p className="order-total">Total: ₹{selectedOrder.totalAmount}</p>
+
+                                        <div className="order-items">
+                                            {selectedOrder.items.map((item, index) => {
+                                                const menu = item.itemId || {}; 
+
+                                                return (
+                                                    <div className="order-item-card" key={index}>
+
+                                                        <img
+                                                            src={menu.image || "https://via.placeholder.com/70"}
+                                                            alt={menu.name || item.name}
+                                                        />
+
+                                                        <div className="item-details">
+                                                            <h4>{menu.name || item.name}</h4>
+
+                                                            <p>₹{menu.price || item.price}</p>
+
+                                                            <p>Qty: {item.quantity}</p>
+
+                                                            <p>
+                                                                Total: ₹{(menu.price || item.price) * item.quantity}
+                                                            </p>
+
+                                                          
+                                                            {menu.description && (
+                                                                <p className="desc">{menu.description}</p>
+                                                            )}
+
+                                                            
+                                                            {menu.isVeg !== undefined && (
+                                                                <span className={`veg ${menu.isVeg ? "veg" : "nonveg"}`}>
+                                                                    {menu.isVeg ? "Veg" : "Non-Veg"}
+                                                                </span>
+                                                            )}
+
+                                                        </div>
+
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        <button className="close-btn" onClick={() => setShowOrderModal(false)}>
+                                            Close
+                                        </button>
+
+                                    </div>
+                                </div>
                             )}
                         </>
                     )}

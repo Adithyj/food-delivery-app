@@ -1,58 +1,82 @@
-/* AdminOrders.css */
-
-.admin-orders {
+.orders-container {
+  background: white;
   padding: 20px;
+  border-radius: 10px;
 }
 
-/* FILTERS */
-.admin-orders .filters {
+.orders-header {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.admin-orders .filters input,
-.admin-orders .filters select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.filters select {
+  padding: 6px;
+  margin-right: 10px;
 }
 
-.admin-orders .filters button {
-  background: #1890ff;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* TABLE */
-.admin-orders .orders-table {
+.orders-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.admin-orders .orders-table th,
-.admin-orders .orders-table td {
+.orders-table th,
+.orders-table td {
   padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
-.admin-orders .orders-table th {
-  background: #f5f5f5;
-}
-
-/* STATUS */
-.admin-orders .status {
-  padding: 5px 10px;
-  border-radius: 6px;
+/* STATUS COLORS */
+.status {
+  padding: 4px 8px;
+  border-radius: 5px;
   color: white;
+  font-size: 12px;
 }
 
-.admin-orders .placed { background: gray; }
-.admin-orders .preparing { background: orange; }
-.admin-orders .out-for-delivery { background: blue; }
-.admin-orders .delivered { background: green; }
-.admin-orders .cancelled { background: red; }
+.status.placed {
+  background: gray;
+}
+
+.status.preparing {
+  background: orange;
+}
+
+.status.out-for-delivery {
+  background: blue;
+}
+
+.status.delivered {
+  background: green;
+}
+
+.status.cancelled {
+  background: red;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+.modal-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
