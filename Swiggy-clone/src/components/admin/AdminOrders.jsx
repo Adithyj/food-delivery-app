@@ -15,7 +15,7 @@ function AdminOrders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [newStatus, setNewStatus] = useState("");
 
-  // 🔥 FETCH ORDERS
+  
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -37,7 +37,7 @@ function AdminOrders() {
     fetchOrders();
   }, []);
 
-  // 🔥 FILTER CHANGE
+  
   const handleFilterChange = (e) => {
     setFilters({
       ...filters,
@@ -45,13 +45,13 @@ function AdminOrders() {
     });
   };
 
-  // 🔥 OPEN MODAL
+  
   const openModal = (order) => {
     setSelectedOrder(order);
     setNewStatus(order.status || "Placed");
   };
 
-  // 🔥 UPDATE STATUS
+  
   const updateStatus = async () => {
     try {
       await axios.put(
@@ -86,7 +86,7 @@ function AdminOrders() {
         </div>
       </div>
 
-      {/* LOADING */}
+      
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -145,7 +145,7 @@ function AdminOrders() {
         </table>
       )}
 
-      {/* MODAL */}
+      
       {selectedOrder && (
         <div className="modal-overlay">
           <div className="modal">

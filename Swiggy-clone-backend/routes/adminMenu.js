@@ -3,12 +3,12 @@ const router = express.Router();
 const Menu = require("../models/Menu");
 
 
-// ✅ CREATE MENU ITEM
+
 router.post("/admin/menu", async (req, res) => {
   try {
     const { restaurant, name, price, description, isVeg, image } = req.body;
 
-    // 🔥 validation
+    
     if (!restaurant || !name || !price || !image) {
       return res.status(400).json({
         message: "Restaurant, name, price and image are required"
@@ -34,7 +34,7 @@ router.post("/admin/menu", async (req, res) => {
 });
 
 
-// ✅ GET ALL MENU ITEMS
+
 router.get("/admin/menu", async (req, res) => {
   try {
     const items = await Menu.find()
@@ -49,7 +49,7 @@ router.get("/admin/menu", async (req, res) => {
 });
 
 
-// ✅ UPDATE MENU ITEM
+
 router.put("/admin/menu/:id", async (req, res) => {
   try {
     const { restaurant, name, price, description, isVeg, image } = req.body;
@@ -62,7 +62,7 @@ router.put("/admin/menu/:id", async (req, res) => {
       });
     }
 
-    // 🔥 safe updates
+    
     if (restaurant) item.restaurant = restaurant;
     if (name) item.name = name;
     if (price) item.price = price;
@@ -80,7 +80,7 @@ router.put("/admin/menu/:id", async (req, res) => {
 });
 
 
-// ✅ DELETE MENU ITEM
+
 router.delete("/admin/menu/:id", async (req, res) => {
   try {
     const item = await Menu.findById(req.params.id);

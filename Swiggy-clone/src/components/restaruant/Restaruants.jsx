@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Restaurants() {
-  const API = import.meta.env.VITE_API ;
+  const API = import.meta.env.VITE_API;
   const { categoryName } = useParams();
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);
@@ -89,18 +89,18 @@ function Restaurants() {
                   <p className="rating">
                     ⭐ {r.rating} • {r.deliveryTime}
                   </p>
-                 <div className="categories">
-  <p style={{
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "100%",
-    color: "#686b78", 
-    fontSize: "14px"
-  }}> 
-    {r.categories.map(cat => cat.name).join(", ")}
-  </p>
-</div>
+                  <div className="categories">
+                    <p style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      width: "100%",
+                      color: "#686b78",
+                      fontSize: "14px"
+                    }}>
+                      {r.categories.map(cat => cat.name).join(", ")}
+                    </p>
+                  </div>
 
                   <p className="location">{r.location}</p>
 

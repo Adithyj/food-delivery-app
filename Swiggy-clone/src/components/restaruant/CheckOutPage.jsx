@@ -32,7 +32,7 @@ function CheckOutPage() {
     );
   }
 
-  // ✅ STEP 1: Proper pricing (same as backend)
+
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -41,7 +41,7 @@ function CheckOutPage() {
   const gst = subtotal * 0.18;
   const totalAmount = subtotal + gst;
 
-  // cart key
+
   const getCartKey = () => {
     if (!user?._id) return "cart_guest";
     return `cart_${user._id}`;
@@ -58,7 +58,7 @@ function CheckOutPage() {
     setLoading(true);
 
     try {
-      // ✅ send GST-included amount
+
       const res = await axios.post(
         `${API}/payment-intent`,
         { amount: Math.round(totalAmount * 100) }
@@ -83,10 +83,15 @@ function CheckOutPage() {
         await axios.post(`${API}/api/order`, {
           userId: user._id,
           restaurantId: items[0].restaurantId,
-          items: items
+          items: items.map(item => ({
+            itemId: item._id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+          }))
         });
 
-        // ✅ remove purchased items from cart
+
         const existingCart =
           JSON.parse(localStorage.getItem(getCartKey())) || [];
 
@@ -117,7 +122,7 @@ function CheckOutPage() {
     <div className="checkout-container">
       <h2>Checkout</h2>
 
-      {/* ORDER SUMMARY */}
+
       <div className="order-summary">
         {items.map((item) => (
           <div key={item._id} className="summary-item">
@@ -136,13 +141,13 @@ function CheckOutPage() {
 
         <hr />
 
-        {/* ✅ NEW BREAKDOWN */}
+
         <h3>Subtotal: ₹{subtotal.toFixed(2)}</h3>
         <h3>GST (18%): ₹{gst.toFixed(2)}</h3>
         <h3 className="total">Total: ₹{totalAmount.toFixed(2)}</h3>
       </div>
 
-      {/* PAYMENT */}
+
       <div className="payment-box">
         <h3>Card Details</h3>
 

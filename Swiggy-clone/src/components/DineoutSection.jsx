@@ -1,18 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DineoutSection.css";
-
-const restaurants = Array(10).fill({
-  name: "Five Star",
-  rating: "4.6",
-  cuisine: "Fast Food • Beverages",
-  location: "Diya Enclave Complex, Lalbagh",
-  price: "₹400 for two",
-  distance: "10.8 km",
-  offer: "Flat 30% off on pre-booking",
-  image:
-    "https://dineout-media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/DINEOUT_ALL_RESTAURANTS/IMAGES/RESTAURANT_IMAGE_SERVICE/2025/12/1/1fa8c6e5-d424-403f-a6c7-67e607b2e4f7_image1174a2af93d7b94b41a4d017d30bf7cf8c.JPG",
-});
+import restaurants from "./restaurantsData";
 
 function DineoutSection() {
   const scrollRef = useRef(null);
@@ -39,11 +28,11 @@ function DineoutSection() {
       </div>
 
       <div className="dineout-container" ref={scrollRef}>
-        {restaurants.map((res, index) => (
+        {restaurants.map((res) => (
           <div 
-            key={index} 
+            key={res.id}
             className="dineout-card"
-            onClick={() => navigate(`/restaurant/${index}/dineout`)}
+            onClick={() => navigate(`/restaurant/${res.id}/dineout`)}
           >
 
             <div className="card-image">

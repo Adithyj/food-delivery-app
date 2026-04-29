@@ -3,12 +3,12 @@ const router = express.Router();
 const Product = require("../models/Product");
 
 
-// ✅ CREATE PRODUCT
+
 router.post("/admin/products", async (req, res) => {
   try {
     const { name, price, category, restaurant, image } = req.body;
 
-    // 🔥 validation
+    
     if (!name || !price || !category || !restaurant || !image) {
       return res.status(400).json({
         message: "All fields including image URL are required"
@@ -33,7 +33,7 @@ router.post("/admin/products", async (req, res) => {
 });
 
 
-// ✅ GET PRODUCTS BY RESTAURANT
+
 router.get("/admin/products/:restaurantId", async (req, res) => {
   try {
     const products = await Product.find({
@@ -50,7 +50,6 @@ router.get("/admin/products/:restaurantId", async (req, res) => {
 });
 
 
-// ✅ UPDATE PRODUCT
 router.put("/admin/products/:id", async (req, res) => {
   try {
     const { name, price, category, restaurant, image } = req.body;
@@ -63,7 +62,7 @@ router.put("/admin/products/:id", async (req, res) => {
       });
     }
 
-    // 🔥 safe updates
+    
     if (name) product.name = name;
     if (price) product.price = price;
     if (category) product.category = category;
@@ -80,7 +79,7 @@ router.put("/admin/products/:id", async (req, res) => {
 });
 
 
-// ✅ DELETE PRODUCT
+
 router.delete("/admin/products/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -101,9 +100,6 @@ router.delete("/admin/products/:id", async (req, res) => {
 });
 
 
-/* ============================
-   ✅ PUBLIC ROUTE (USER SIDE)
-   ============================ */
 
 router.get("/products", async (req, res) => {
   try {
@@ -113,7 +109,7 @@ router.get("/products", async (req, res) => {
       return res.json([]);
     }
 
-    // 🔥 FIX: filter in DB, not JS
+    
     const products = await Product.find()
       .populate("category", "name")
       .populate("restaurant", "name");

@@ -16,7 +16,7 @@ function AdminCategories() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  // 🔥 FETCH
+  
   const fetchCategories = async () => {
     try {
       setLoading(true);
@@ -34,7 +34,7 @@ function AdminCategories() {
     fetchCategories();
   }, []);
 
-  // 🔥 ADD
+  
   const openAdd = () => {
     setName("");
     setImage(null);
@@ -43,7 +43,7 @@ function AdminCategories() {
     setShowModal(true);
   };
 
-  // 🔥 EDIT
+  
   const openEdit = (cat) => {
     setName(cat.name);
     setPreview(`${API}/${cat.image}`);
@@ -52,7 +52,7 @@ function AdminCategories() {
     setShowModal(true);
   };
 
-  // 🔥 SUBMIT
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -84,7 +84,7 @@ function AdminCategories() {
     }
   };
 
-  // 🔥 DELETE
+  
   const deleteCategory = async (id) => {
     if (!window.confirm("Delete this category?")) return;
 
@@ -158,7 +158,7 @@ function AdminCategories() {
         </table>
       )}
 
-      {/* MODAL */}
+      
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">

@@ -71,38 +71,76 @@ router.post("/order", async (req, res) => {
     await order.save();
 
     
-    const doc = new PDFDocument();
-    let buffers = [];
+    const doc = new PDFDocument({ margin: 40 });
+let buffers = [];
 
-    doc.on("data", buffers.push.bind(buffers));
+doc.on("data", buffers.push.bind(buffers));
 
-    doc.on("end", async () => {
-      const pdfBuffer = Buffer.concat(buffers);
+doc.on("end", async () => {
+  const pdfBuffer = Buffer.concat(buffers);
 
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.user,
-          pass: process.env.pass
-        }
-      });
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.user,
+      pass: process.env.pass
+    }
+  });
 
-      await transporter.sendMail({
-        from: process.env.user,
-        to: user.email,
-        subject: "Order Receipt",
-        text: "Your order receipt is attached",
-        attachments: [
-          {
-            filename: "invoice.pdf",
-            content: pdfBuffer
-          }
-        ]
-      });
-    });
+  await transporter.sendMail({
+    from: process.env.user,
+    to: user.email,
+    subject: "Order Receipt",
+    text: "Your order receipt is attached",
+    attachments: [
+      {
+        filename: "invoice.pdf",
+        content: pdfBuffer
+      }
+    ]
+  });
+});
 
-    doc.text("Order Receipt");
-    doc.end();
+
+
+doc.fontSize(20).text("ORDER RECEIPT", { align: "center" });
+doc.moveDown();
+
+
+doc.fontSize(12).text(`Name: ${user.name}`);
+doc.text(`Order ID: #${order._id}`);
+doc.text(`Date: ${new Date().toLocaleDateString()}`);
+doc.moveDown();
+
+
+doc.text("Item", 50);
+doc.text("Price", 200);
+doc.text("Qty", 300);
+doc.text("Total", 350);
+doc.moveDown();
+
+doc.moveTo(50, doc.y).lineTo(500, doc.y).stroke();
+doc.moveDown();
+
+
+formattedItems.forEach(item => {
+  doc.text(item.name, 50);
+  doc.text(`Rs.${item.price}`, 200);
+  doc.text(item.quantity.toString(), 300);
+  doc.text(`Rs.${item.price * item.quantity}`, 350);
+  doc.moveDown();
+});
+
+doc.moveDown();
+
+
+doc.text(`Subtotal: Rs.${subtotal.toFixed(2)}`);
+doc.text(`GST (18%): Rs.${gst.toFixed(2)}`);
+doc.text(`Total Amount: Rs.${finalTotal.toFixed(2)}`, {
+  underline: true
+});
+
+doc.end();
 
     res.status(201).json(order);
 

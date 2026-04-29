@@ -18,7 +18,7 @@ function RestaurantDetails() {
   const [menu, setMenu] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
-  // ================= USER BASED CART =================
+  
   const getCartKey = () => {
     if (!user?._id) return "cart_guest";
     return `cart_${user._id}`;
@@ -38,7 +38,7 @@ function RestaurantDetails() {
     return item ? item.quantity : 0;
   };
 
-  // ================= FETCH DATA =================
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +53,7 @@ function RestaurantDetails() {
     fetchData();
   }, [id]);
 
-  // ================= ADD TO CART =================
+  
   const addToCart = (item) => {
     if (!user) {
       alert("Please login first");
@@ -82,7 +82,7 @@ function RestaurantDetails() {
     setRefresh(!refresh);
   };
 
-  // ================= DECREASE QTY =================
+  
   const decreaseQty = (item) => {
     let cart = getCart();
 
@@ -107,7 +107,7 @@ function RestaurantDetails() {
 
       <div className="restaurant-page">
 
-        {/* ================= HEADER ================= */}
+        
         <div className="restaurant-header">
           <h1 style={{ textAlign: "left", fontSize: "2em" }}>
             {restaurant.name}
@@ -124,7 +124,6 @@ function RestaurantDetails() {
           </div>
         </div>
 
-        {/* ================= TOP PICKS ================= */}
         <div className="deal-box">
           <h2>Top Picks</h2>
         </div>
@@ -141,7 +140,7 @@ function RestaurantDetails() {
           </div>
         </div>
 
-        {/* ================= DEALS ================= */}
+        
         <div className="deal-box">
           <h2>Deals for you</h2>
         </div>
@@ -175,7 +174,7 @@ function RestaurantDetails() {
           </div>
         </div>
 
-        {/* ================= MENU ================= */}
+        
         <div className="menu-section">
           <h2>MENU</h2>
 

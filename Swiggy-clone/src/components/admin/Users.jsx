@@ -18,7 +18,7 @@ function Users() {
     phone: ""
   });
 
-  // 🔥 FETCH USERS
+  
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -36,19 +36,19 @@ function Users() {
     fetchUsers();
   }, []);
 
-  // 🔥 HANDLE INPUT
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔥 OPEN ADD
+  
   const openAdd = () => {
     setForm({ name: "", email: "", phone: "" });
     setIsEditing(false);
     setShowModal(true);
   };
 
-  // 🔥 OPEN EDIT
+  
   const openEdit = (user) => {
     setForm({
       name: user.name,
@@ -60,7 +60,7 @@ function Users() {
     setShowModal(true);
   };
 
-  // 🔥 SAVE USER
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -84,7 +84,7 @@ function Users() {
     }
   };
 
-  // 🔥 DELETE USER
+  
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
 
@@ -106,7 +106,7 @@ function Users() {
         </button>
       </div>
 
-      {/* LOADING */}
+      
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -153,7 +153,7 @@ function Users() {
         </table>
       )}
 
-      {/* MODAL */}
+      
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">

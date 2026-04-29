@@ -26,7 +26,7 @@ function AdminRestaurants() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  // 🔥 FETCH DATA
+  
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -51,18 +51,18 @@ function AdminRestaurants() {
     fetchData();
   }, []);
 
-  // 🔥 CATEGORY OPTIONS
+  
   const categoryOptions = categories.map(c => ({
     value: c._id,
     label: c.name
   }));
 
-  // 🔥 HANDLE INPUT
+  
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔥 ADD
+  
   const openAdd = () => {
     setForm({ name: "", location: "", rating: "", deliveryTime: "" });
     setSelectedCategories([]);
@@ -72,7 +72,7 @@ function AdminRestaurants() {
     setShowModal(true);
   };
 
-  // 🔥 EDIT
+ 
   const openEdit = (r) => {
     setForm({
       name: r.name,
@@ -94,7 +94,7 @@ function AdminRestaurants() {
     setShowModal(true);
   };
 
-  // 🔥 SUBMIT
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -136,7 +136,7 @@ function AdminRestaurants() {
     }
   };
 
-  // 🔥 DELETE
+  
   const deleteRestaurant = async (id) => {
     if (!window.confirm("Delete this restaurant?")) return;
 
@@ -218,7 +218,7 @@ function AdminRestaurants() {
         </table>
       )}
 
-      {/* MODAL */}
+      
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">

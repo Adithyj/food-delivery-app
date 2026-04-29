@@ -1,0 +1,13 @@
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.orders-title {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+
+

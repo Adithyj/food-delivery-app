@@ -44,7 +44,7 @@ function CartPage() {
           <p>Cart is empty</p>
         ) : (
           <>
-            {/* BUY ALL */}
+            
             <button
               className="buy-all-btn"
               onClick={() =>

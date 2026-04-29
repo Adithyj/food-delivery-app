@@ -18,7 +18,7 @@ function Navbar() {
 
   const navigate = useNavigate();
 
-  // Load cart count
+  
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -62,7 +62,7 @@ function Navbar() {
     <>
       <div className="navbar">
 
-        {/* LEFT */}
+        
         <div className="nav-left">
 
           <div className="logo">
@@ -77,7 +77,7 @@ function Navbar() {
 
         </div>
 
-        {/* RIGHT */}
+        
         <div className="nav-right">
 
           <div className="nav-item">
@@ -107,7 +107,7 @@ function Navbar() {
   <BiUser /> {user?.name || "Profile"}
 </div>
 
-          {/* ✅ CART BUTTON */}
+          
           <div className="nav-item" onClick={() => navigate("/cart")}>
             <BsCart /> Cart ({cartCount})
           </div>
@@ -115,7 +115,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* LOCATION PANEL */}
+      
       {showLocation && (
         <div className="overlay">
 

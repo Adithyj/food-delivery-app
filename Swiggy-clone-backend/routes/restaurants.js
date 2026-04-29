@@ -4,7 +4,7 @@ const Restaurant = require("../models/Restaurant");
 const Category = require("../models/Category");
 
 
-// ✅ GET RESTAURANTS (FILTER + SORT)
+
 router.get("/restaurants", async (req, res) => {
   try {
     const { category, sort } = req.query;
@@ -12,7 +12,7 @@ router.get("/restaurants", async (req, res) => {
     let query = {};
     let sortOption = {};
 
-    // 🔥 CATEGORY FILTER
+   
     if (category) {
       const cat = await Category.findOne({
         name: new RegExp(`^${category}$`, "i")
@@ -25,14 +25,14 @@ router.get("/restaurants", async (req, res) => {
       query.categories = cat._id;
     }
 
-    // 🔥 SORTING (DB LEVEL)
+    
     if (sort === "rating") {
-      sortOption.rating = -1; // highest first
+      sortOption.rating = -1; 
     }
 
     if (sort === "delivery") {
-      // ⚠️ assumes deliveryTime is numeric (recommended)
-      sortOption.deliveryTime = 1; // fastest first
+      
+      sortOption.deliveryTime = 1; 
     }
 
     const restaurants = await Restaurant.find(query)

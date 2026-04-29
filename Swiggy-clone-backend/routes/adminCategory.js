@@ -3,12 +3,12 @@ const router = express.Router();
 const Category = require("../models/Category");
 
 
-// ✅ CREATE CATEGORY
+
 router.post("/admin/categories", async (req, res) => {
   try {
     const { name, image } = req.body;
 
-    // 🔥 validation
+    
     if (!name || !image) {
       return res.status(400).json({
         message: "Name and image URL are required"
@@ -30,7 +30,7 @@ router.post("/admin/categories", async (req, res) => {
 });
 
 
-// ✅ GET ALL
+
 router.get("/admin/categories", async (req, res) => {
   try {
     const categories = await Category.find()
@@ -44,7 +44,7 @@ router.get("/admin/categories", async (req, res) => {
 });
 
 
-// ✅ UPDATE
+
 router.put("/admin/categories/:id", async (req, res) => {
   try {
     const { name, image } = req.body;
@@ -57,7 +57,7 @@ router.put("/admin/categories/:id", async (req, res) => {
       });
     }
 
-    // 🔥 only update if provided
+   
     if (name) category.name = name;
     if (image) category.image = image;
 
@@ -71,7 +71,7 @@ router.put("/admin/categories/:id", async (req, res) => {
 });
 
 
-// ✅ DELETE
+
 router.delete("/admin/categories/:id", async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);

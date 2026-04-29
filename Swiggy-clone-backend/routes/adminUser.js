@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 
 
-// ✅ GET ALL USERS
+
 router.get("/admin/users", async (req, res) => {
   try {
     const users = await User.find()
@@ -17,12 +17,12 @@ router.get("/admin/users", async (req, res) => {
 });
 
 
-// ✅ CREATE USER
+
 router.post("/admin/users", async (req, res) => {
   try {
     const { phone, name, email } = req.body;
 
-    // 🔥 validation
+    
     if (!phone || !name || !email) {
       return res.status(400).json({
         message: "All fields are required"
@@ -59,7 +59,7 @@ router.post("/admin/users", async (req, res) => {
 });
 
 
-// ✅ UPDATE USER
+
 router.put("/admin/users/:id", async (req, res) => {
   try {
     const { name, email, phone } = req.body;
@@ -72,7 +72,7 @@ router.put("/admin/users/:id", async (req, res) => {
       });
     }
 
-    // 🔥 check email uniqueness
+    
     if (email) {
       const emailExists = await User.findOne({
         email,
@@ -86,7 +86,7 @@ router.put("/admin/users/:id", async (req, res) => {
       }
     }
 
-    // 🔥 check phone uniqueness
+    
     if (phone) {
       const phoneExists = await User.findOne({
         phone,
@@ -100,7 +100,7 @@ router.put("/admin/users/:id", async (req, res) => {
       }
     }
 
-    // 🔥 safe updates
+    
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
@@ -115,7 +115,7 @@ router.put("/admin/users/:id", async (req, res) => {
 });
 
 
-// ✅ DELETE USER
+
 router.delete("/admin/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

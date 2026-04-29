@@ -19,10 +19,10 @@ router.get("/admin/orders", async (req, res) => {
 
     const orders = await Order.find(query)
       .populate("userId", "name email")
-      .populate("restaurantId", "name image") // ✅ include image
+      .populate("restaurantId", "name image") 
       .populate({
         path: "items.itemId",
-        select: "name price image description isVeg" // ✅ IMPORTANT
+        select: "name price image description isVeg" 
       })
       .sort({ createdAt: -1 });
 
@@ -33,12 +33,12 @@ router.get("/admin/orders", async (req, res) => {
   }
 });
 
-// ✅ UPDATE ORDER STATUS
+
 router.put("/admin/orders/:id/status", async (req, res) => {
   try {
     const { status } = req.body;
 
-    // 🔥 validation
+   
     const validStatuses = [
       "Placed",
       "Preparing",

@@ -3,7 +3,7 @@ const router = express.Router();
 const Restaurant = require("../models/Restaurant");
 
 
-// ✅ CREATE RESTAURANT
+
 router.post("/admin/restaurants", async (req, res) => {
   try {
     const {
@@ -15,21 +15,21 @@ router.post("/admin/restaurants", async (req, res) => {
       image
     } = req.body;
 
-    // 🔥 validation
+   
     if (!name || !location || !image) {
       return res.status(400).json({
         message: "Name, location and image are required"
       });
     }
 
-    // 🔥 handle categories safely (array expected)
+   
     let categoryArray = [];
 
     if (categories) {
       if (Array.isArray(categories)) {
         categoryArray = categories;
       } else {
-        // fallback if frontend still sends string
+        
         try {
           categoryArray = JSON.parse(categories);
         } catch {
@@ -59,7 +59,7 @@ router.post("/admin/restaurants", async (req, res) => {
 });
 
 
-// ✅ GET ALL RESTAURANTS
+
 router.get("/admin/restaurants", async (req, res) => {
   try {
     const restaurants = await Restaurant.find()
@@ -74,7 +74,7 @@ router.get("/admin/restaurants", async (req, res) => {
 });
 
 
-// ✅ UPDATE RESTAURANT
+
 router.put("/admin/restaurants/:id", async (req, res) => {
   try {
     const restaurant = await Restaurant.findById(req.params.id);
@@ -94,14 +94,14 @@ router.put("/admin/restaurants/:id", async (req, res) => {
       image
     } = req.body;
 
-    // 🔥 safe updates
+   
     if (name) restaurant.name = name;
     if (location) restaurant.location = location;
     if (rating) restaurant.rating = rating;
     if (deliveryTime) restaurant.deliveryTime = deliveryTime;
     if (image) restaurant.image = image;
 
-    // 🔥 categories handling
+    
     if (categories !== undefined) {
       if (Array.isArray(categories)) {
         restaurant.categories = categories;
@@ -126,7 +126,6 @@ router.put("/admin/restaurants/:id", async (req, res) => {
 });
 
 
-// ✅ DELETE RESTAURANT
 router.delete("/admin/restaurants/:id", async (req, res) => {
   try {
     const restaurant = await Restaurant.findById(req.params.id);
