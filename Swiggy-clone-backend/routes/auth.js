@@ -4,6 +4,9 @@ const User = require("../models/User");
 const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 router.post("/check-user", async (req, res) => {
   try {
@@ -33,42 +36,31 @@ router.post("/send-otp", async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    const otp =  otpGenerator.generate(6, {
-  upperCaseAlphabets: false,
-  lowerCaseAlphabets: false,
-  specialChars: false,
-});
+    const otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    });
 
     user.otp = otp;
-    user.otpExpires = Date.now() + 1 * 60 * 1000; 
-
+    user.otpExpires = Date.now() + 5 * 60 * 1000; // make it 5 min
     await user.save();
-    const transporter = nodemailer.createTransport({
-    service: "gmail",
-  auth: {
-    user: process.env.user,
-    pass: process.env.pass
-  },
-});
 
-let info = {
-  from: process.env.user,
-  to: user.email,
-  subject: "Your OTP for Swiggy",
-  text: `Your OTP is ${otp}`,
-}
-await transporter.sendMail(info).then((info) => {
-  res.json({ message: "OTP sent" });
-}).catch((err) => {
-  console.log(err);
-  res.status(500).json({ message: "Failed to send OTP" });
-});
+    // ✅ Send email via Resend
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: user.email,
+      subject: "Your OTP",
+      html: `<h2>Your OTP is: ${otp}</h2>`,
+    });
+
+    res.json({ message: "OTP sent successfully" });
 
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.log("EMAIL ERROR:", error);
+    res.status(500).json({ message: "Failed to send OTP" });
   }
 });
-
 
 
 router.post("/verify-otp", async (req, res) => {

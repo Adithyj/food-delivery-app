@@ -5,7 +5,9 @@ const nodemailer = require("nodemailer");
 const User = require("../models/User");
 const PDFDocument = require("pdfkit");
 const Menu = require("../models/Menu");
+const { Resend } = require("resend");
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 router.put("/orders/:id/cancel", async (req, res) => {
@@ -79,26 +81,18 @@ doc.on("data", buffers.push.bind(buffers));
 doc.on("end", async () => {
   const pdfBuffer = Buffer.concat(buffers);
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.user,
-      pass: process.env.pass
-    }
-  });
-
-  await transporter.sendMail({
-    from: process.env.user,
-    to: user.email,
-    subject: "Order Receipt",
-    text: "Your order receipt is attached",
-    attachments: [
-      {
-        filename: "invoice.pdf",
-        content: pdfBuffer
-      }
-    ]
-  });
+  await resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: user.email,
+  subject: "Order Receipt",
+  html: "<p>Your order receipt is attached</p>",
+  attachments: [
+    {
+      filename: "invoice.pdf",
+      content: pdfBuffer.toString("base64"), // important
+    },
+  ],
+});
 });
 
 
