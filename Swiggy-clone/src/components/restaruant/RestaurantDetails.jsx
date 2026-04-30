@@ -193,7 +193,7 @@ function RestaurantDetails() {
               </div>
 
               <div className="menu-img">
-                <img src={`${API}/${item.image}`} alt={item.name} />
+                <img src={item.image} alt={item.name} />
 
                 {getQuantity(item._id) === 0 ? (
                   <button onClick={() => addToCart(item)}>
