@@ -194,7 +194,7 @@ function CategorySlider() {
         <div className="grid-card" key={i}>
 
           <div className="image-wrapper">
-            <img src={`${API}/${r.image}`} alt={r.name} />
+            <img src={r.image} alt={r.name} />
             <div className="offer">20% OFF UPTO ₹50</div>
           </div>
 
