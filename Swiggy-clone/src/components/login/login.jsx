@@ -57,7 +57,7 @@ function Login() {
                         or{" "}
                         <a
                             className="lg1"
-                            href="#"
+                            href="/login"
                             style={{ textDecoration: "none" }}
                         >
                             login to your account

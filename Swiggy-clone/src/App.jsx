@@ -24,6 +24,7 @@ import RestaurantMenu from "./components/RestaurantMenu.jsx";
 import CategorySlider from "./restaraunt-card/CategorySlider.jsx";
 import MyAccount from "./profile/MyAccount";
 import UserPanel from "./components/UserPanel.jsx";
+import AdminMenu from "./components/admin/AdminMenu.jsx";
 const stripePromise = loadStripe(
   "pk_test_51Qc1LIFlNATJ2G6NFyYOw3u4siqArjmyfq5QPniiRUsVT9MGhKcfYgGwIpMMWkVoOcl3fn0rNk91OqqY57tylBBJ0024trWydJ"
 );
@@ -62,6 +63,7 @@ function App() {
             <Route path="categories" element={<AdminCategories />} />
             <Route path="restaurants" element={<AdminRestaurants />} />
             <Route path="orders" element={<AdminOrders />} />
+            <Route path="menu" element={<AdminMenu />} />
 
 
           </Route>

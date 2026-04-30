@@ -15,7 +15,6 @@ function AdminOrders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [newStatus, setNewStatus] = useState("");
 
-  
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -37,7 +36,6 @@ function AdminOrders() {
     fetchOrders();
   }, []);
 
-  
   const handleFilterChange = (e) => {
     setFilters({
       ...filters,
@@ -45,13 +43,11 @@ function AdminOrders() {
     });
   };
 
-  
   const openModal = (order) => {
     setSelectedOrder(order);
     setNewStatus(order.status || "Placed");
   };
 
-  
   const updateStatus = async () => {
     try {
       await axios.put(
@@ -69,6 +65,8 @@ function AdminOrders() {
 
   return (
     <div className="orders-container">
+      
+      {/* HEADER */}
       <div className="orders-header">
         <h1>Order Management</h1>
 
@@ -86,66 +84,72 @@ function AdminOrders() {
         </div>
       </div>
 
-      
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>User</th>
-              <th>Restaurant</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {orders.length === 0 ? (
+      {/* TABLE SCROLL AREA */}
+      <div className="table-wrapper">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <table className="orders-table">
+            <thead>
               <tr>
-                <td colSpan="7">No Orders Found</td>
+                <th>Order</th>
+                <th>User</th>
+                <th>Restaurant</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            ) : (
-              orders.map((o) => (
-                <tr key={o._id}>
-                  <td>{o._id.slice(-6)}</td>
+            </thead>
 
-                  <td>{o.userId?.name || "N/A"}</td>
-
-                  <td>{o.restaurantId?.name || "N/A"}</td>
-
-                  <td>
-                    {o.items?.map((item, i) => (
-                      <div key={i}>
-                        {item.name} x {item.quantity}
-                      </div>
-                    ))}
-                  </td>
-
-                  <td>₹{o.totalAmount}</td>
-
-                  <td>
-                    <span className={`status ${o.status?.toLowerCase().replace(/ /g, "-")}`}>
-                      {o.status}
-                    </span>
-                  </td>
-
-                  <td>
-                    <button onClick={() => openModal(o)}>
-                      Update
-                    </button>
-                  </td>
+            <tbody>
+              {orders.length === 0 ? (
+                <tr>
+                  <td colSpan="7">No Orders Found</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      )}
+              ) : (
+                orders.map((o) => (
+                  <tr key={o._id}>
+                    <td>{o._id.slice(-6)}</td>
 
-      
+                    <td>{o.userId?.name || "N/A"}</td>
+
+                    <td>{o.restaurantId?.name || "N/A"}</td>
+
+                    <td>
+                      {o.items?.map((item, i) => (
+                        <div key={i}>
+                          {item.name} x {item.quantity}
+                        </div>
+                      ))}
+                    </td>
+
+                    <td>₹{o.totalAmount}</td>
+
+                    <td>
+                      <span
+                        className={`status ${o.status
+                          ?.toLowerCase()
+                          .replace(/ /g, "-")}`}
+                      >
+                        {o.status}
+                      </span>
+                    </td>
+
+                    <td>
+                      <button onClick={() => openModal(o)}>
+                        Update
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* MODAL */}
       {selectedOrder && (
         <div className="modal-overlay">
           <div className="modal">

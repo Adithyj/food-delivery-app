@@ -1,26 +1,25 @@
-.categories-container {
+.menu-container {
   background: white;
   padding: 20px;
   border-radius: 10px;
 }
 
-.categories-header {
+.menu-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.categories-table {
+.menu-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.categories-table th,
-.categories-table td {
+.menu-table th,
+.menu-table td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
-
 
 .primary-btn {
   background: red;
@@ -31,7 +30,7 @@
   cursor: pointer;
 }
 
-.edit-btn1 {
+.edit-btn {
   background: orange;
   border: none;
   padding: 6px 10px;
@@ -49,7 +48,7 @@
   cursor: pointer;
 }
 
-
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -66,7 +65,7 @@
 .modal {
   background: white;
   padding: 20px;
-  width: 300px;
+  width: 350px;
   border-radius: 10px;
 }
 

@@ -13,6 +13,7 @@ function Sidebar() {
         <NavLink to="/admin/categories">Food</NavLink>
         <NavLink to="/admin/restaurants">Restaurants</NavLink>
         <NavLink to="/admin/orders">Orders</NavLink>
+        <NavLink to="/admin/menu">Menu</NavLink>
       </nav>
     </div>
   );

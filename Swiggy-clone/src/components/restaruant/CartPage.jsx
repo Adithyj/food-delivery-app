@@ -57,7 +57,11 @@ function CartPage() {
             {cart.map((item) => (
               <div className="Item-box" key={item._id}>
                 <div className="item-box1">
-                  <img src={`${API}/${item.image}`} alt="" />
+                <img
+  src={item.image}
+  alt={item.name}
+  onError={(e) => (e.target.src = "https://via.placeholder.com/300")}
+/>
                 </div>
 
                 <div className="item-box2">

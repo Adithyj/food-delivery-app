@@ -77,10 +77,11 @@ function Restaurants() {
 
               <div className="card" key={r._id} onClick={() => navigate(`/restaurant/${r._id}`)}>
 
-                <img
-                  src={`${API}/${r.image}`}
-                  alt={r.name}
-                />
+               <img
+  src={r.image}
+  alt={r.name}
+ 
+/>
 
                 <div className="card-info">
 

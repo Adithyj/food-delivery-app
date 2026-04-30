@@ -55,7 +55,7 @@ function ItemsSection() {
               onClick={() => navigate(`/category/${item.name}`)}
             >
               <img
-                src={`${API}/${item.image}`}
+                src={item.image}
                 alt={item.name}
               />
             </div>
@@ -70,7 +70,7 @@ function ItemsSection() {
               onClick={() => navigate(`/category/${item.name}`)}
             >
               <img
-                src={`${API}/${item.image}`}
+                src={item.image}
                 alt={item.name}
               />
             </div>

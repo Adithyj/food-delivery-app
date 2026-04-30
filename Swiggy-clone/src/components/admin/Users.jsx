@@ -133,7 +133,7 @@ function Users() {
                   <td>{u.phone}</td>
                   <td>
                     <button
-                      className="edit-btn"
+                      className="edit1-btn"
                       onClick={() => openEdit(u)}
                     >
                       Edit

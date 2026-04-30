@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
-import "./AdminRestaurants.css";
+import "./AdminMenu.css";
 
-function AdminRestaurants() {
+function AdminMenu() {
   const API = import.meta.env.VITE_API;
 
+  const [menu, setMenu] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -15,14 +15,14 @@ function AdminRestaurants() {
   const [editingId, setEditingId] = useState(null);
 
   const [form, setForm] = useState({
+    restaurant: "",
     name: "",
-    location: "",
-    rating: "",
-    deliveryTime: "",
-    image: ""   // 🔥 now URL
+    price: "",
+    description: "",
+    isVeg: false,
+    image: ""
   });
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [preview, setPreview] = useState(null);
 
   // FETCH
@@ -30,13 +30,13 @@ function AdminRestaurants() {
     try {
       setLoading(true);
 
-      const [res1, res2] = await Promise.all([
-        axios.get(`${API}/api/admin/restaurants`),
-        axios.get(`${API}/api/admin/categories`)
+      const [menuRes, restRes] = await Promise.all([
+        axios.get(`${API}/api/admin/menu`),
+        axios.get(`${API}/api/admin/restaurants`)
       ]);
 
-      setRestaurants(res1.data);
-      setCategories(res2.data);
+      setMenu(menuRes.data);
+      setRestaurants(restRes.data);
 
     } catch (err) {
       console.log(err);
@@ -50,49 +50,50 @@ function AdminRestaurants() {
     fetchData();
   }, []);
 
-  const categoryOptions = categories.map(c => ({
-    value: c._id,
-    label: c.name
+  // DROPDOWN
+  const restaurantOptions = restaurants.map(r => ({
+    value: r._id,
+    label: r.name
   }));
 
+  // CHANGE
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value
+    });
   };
 
   // ADD
   const openAdd = () => {
     setForm({
+      restaurant: "",
       name: "",
-      location: "",
-      rating: "",
-      deliveryTime: "",
+      price: "",
+      description: "",
+      isVeg: false,
       image: ""
     });
-    setSelectedCategories([]);
     setPreview(null);
     setIsEditing(false);
     setShowModal(true);
   };
 
   // EDIT
-  const openEdit = (r) => {
+  const openEdit = (item) => {
     setForm({
-      name: r.name,
-      location: r.location,
-      rating: r.rating,
-      deliveryTime: r.deliveryTime,
-      image: r.image
+      restaurant: item.restaurant?._id || "",
+      name: item.name,
+      price: item.price,
+      description: item.description,
+      isVeg: item.isVeg,
+      image: item.image
     });
 
-    setSelectedCategories(
-      r.categories.map(c => ({
-        value: c._id,
-        label: c.name
-      }))
-    );
-
-    setPreview(r.image);
-    setEditingId(r._id);
+    setPreview(item.image);
+    setEditingId(item._id);
     setIsEditing(true);
     setShowModal(true);
   };
@@ -101,25 +102,20 @@ function AdminRestaurants() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.location || !form.image) {
+    if (!form.restaurant || !form.name || !form.price || !form.image) {
       return alert("Required fields missing");
     }
-
-    const data = {
-      ...form,
-      categories: selectedCategories.map(c => c.value)
-    };
 
     try {
       if (isEditing) {
         await axios.put(
-          `${API}/api/admin/restaurants/${editingId}`,
-          data
+          `${API}/api/admin/menu/${editingId}`,
+          form
         );
       } else {
         await axios.post(
-          `${API}/api/admin/restaurants`,
-          data
+          `${API}/api/admin/menu`,
+          form
         );
       }
 
@@ -133,11 +129,11 @@ function AdminRestaurants() {
   };
 
   // DELETE
-  const deleteRestaurant = async (id) => {
-    if (!window.confirm("Delete this restaurant?")) return;
+  const deleteItem = async (id) => {
+    if (!window.confirm("Delete this item?")) return;
 
     try {
-      await axios.delete(`${API}/api/admin/restaurants/${id}`);
+      await axios.delete(`${API}/api/admin/menu/${id}`);
       fetchData();
     } catch (err) {
       console.log(err);
@@ -146,42 +142,42 @@ function AdminRestaurants() {
   };
 
   return (
-    <div className="restaurants-container">
-      <div className="restaurants-header">
-        <h1>Restaurant Management</h1>
+    <div className="menu-container">
+
+      <div className="menu-header">
+        <h1>Menu Management</h1>
 
         <button className="primary-btn" onClick={openAdd}>
-          + Add Restaurant
+          + Add Item
         </button>
       </div>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <table className="restaurants-table">
+        <table className="menu-table">
           <thead>
             <tr>
               <th>Image</th>
               <th>Name</th>
-              <th>Location</th>
-              <th>Rating</th>
-              <th>Delivery</th>
-              <th>Categories</th>
+              <th>Restaurant</th>
+              <th>Price</th>
+              <th>Type</th>
               <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {restaurants.length === 0 ? (
+            {menu.length === 0 ? (
               <tr>
-                <td colSpan="7">No restaurants</td>
+                <td colSpan="6">No menu items</td>
               </tr>
             ) : (
-              restaurants.map(r => (
-                <tr key={r._id}>
+              menu.map(item => (
+                <tr key={item._id}>
                   <td>
                     <img
-                      src={r.image}
+                      src={item.image}
                       width="60"
                       onError={(e) =>
                         (e.target.src = "https://via.placeholder.com/60")
@@ -189,26 +185,22 @@ function AdminRestaurants() {
                     />
                   </td>
 
-                  <td>{r.name}</td>
-                  <td>{r.location}</td>
-                  <td>{r.rating}</td>
-                  <td>{r.deliveryTime}</td>
-
-                  <td>
-                    {r.categories.map(c => c.name).join(", ")}
-                  </td>
+                  <td>{item.name}</td>
+                  <td>{item.restaurant?.name}</td>
+                  <td>₹{item.price}</td>
+                  <td>{item.isVeg ? "Veg" : "Non-Veg"}</td>
 
                   <td>
                     <button
-                      className="edit-btn2"
-                      onClick={() => openEdit(r)}
+                      className="edit-btn"
+                      onClick={() => openEdit(item)}
                     >
                       Edit
                     </button>
 
                     <button
                       className="delete-btn"
-                      onClick={() => deleteRestaurant(r._id)}
+                      onClick={() => deleteItem(item._id)}
                     >
                       Delete
                     </button>
@@ -224,22 +216,32 @@ function AdminRestaurants() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>{isEditing ? "Edit Restaurant" : "Add Restaurant"}</h2>
+            <h2>{isEditing ? "Edit Item" : "Add Item"}</h2>
 
             <form onSubmit={handleSubmit}>
-              <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
-              <input name="location" placeholder="Location" value={form.location} onChange={handleChange} />
-              <input name="rating" placeholder="Rating" value={form.rating} onChange={handleChange} />
-              <input name="deliveryTime" placeholder="Delivery Time" value={form.deliveryTime} onChange={handleChange} />
 
               <Select
-                isMulti
-                options={categoryOptions}
-                value={selectedCategories}
-                onChange={(val) => setSelectedCategories(val || [])}
+                options={restaurantOptions}
+                value={restaurantOptions.find(r => r.value === form.restaurant)}
+                onChange={(val) =>
+                  setForm({ ...form, restaurant: val.value })
+                }
               />
 
-              {/* 🔥 URL INPUT */}
+              <input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
+              <input name="price" placeholder="Price" value={form.price} onChange={handleChange} />
+              <input name="description" placeholder="Description" value={form.description} onChange={handleChange} />
+
+              <label>
+                <input
+                  type="checkbox"
+                  name="isVeg"
+                  checked={form.isVeg}
+                  onChange={handleChange}
+                />
+                Veg
+              </label>
+
               <input
                 name="image"
                 placeholder="Enter Image URL"
@@ -261,6 +263,7 @@ function AdminRestaurants() {
                   {isEditing ? "Update" : "Save"}
                 </button>
               </div>
+
             </form>
           </div>
         </div>
@@ -269,4 +272,4 @@ function AdminRestaurants() {
   );
 }
 
-export default AdminRestaurants;
+export default AdminMenu;

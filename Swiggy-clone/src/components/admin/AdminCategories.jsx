@@ -13,10 +13,10 @@ function AdminCategories() {
   const [editingId, setEditingId] = useState(null);
 
   const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(""); // now string URL
   const [preview, setPreview] = useState(null);
 
-  
+  // FETCH
   const fetchCategories = async () => {
     try {
       setLoading(true);
@@ -34,45 +34,45 @@ function AdminCategories() {
     fetchCategories();
   }, []);
 
-  
+  // OPEN ADD
   const openAdd = () => {
     setName("");
-    setImage(null);
+    setImage("");
     setPreview(null);
     setIsEditing(false);
     setShowModal(true);
   };
 
-  
+  // OPEN EDIT
   const openEdit = (cat) => {
     setName(cat.name);
-    setPreview(`${API}/${cat.image}`);
+    setImage(cat.image);
+    setPreview(cat.image);
     setEditingId(cat._id);
     setIsEditing(true);
     setShowModal(true);
   };
 
-  
+  // SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name) return alert("Name required");
+    if (!name || !image) {
+      return alert("Name and image URL required");
+    }
 
-    const formData = new FormData();
-    formData.append("name", name);
-
-    if (image) formData.append("image", image);
+    const data = { name, image };
 
     try {
       if (isEditing) {
         await axios.put(
           `${API}/api/admin/categories/${editingId}`,
-          formData
+          data
         );
       } else {
         await axios.post(
           `${API}/api/admin/categories`,
-          formData
+          data
         );
       }
 
@@ -84,7 +84,7 @@ function AdminCategories() {
     }
   };
 
-  
+  // DELETE
   const deleteCategory = async (id) => {
     if (!window.confirm("Delete this category?")) return;
 
@@ -129,8 +129,9 @@ function AdminCategories() {
                 <tr key={c._id}>
                   <td>
                     <img
-                      src={`${API}/${c.image}`}
+                      src={c.image}
                       width="60"
+                      
                     />
                   </td>
 
@@ -138,7 +139,7 @@ function AdminCategories() {
 
                   <td>
                     <button
-                      className="edit-btn"
+                      className="edit-btn1"
                       onClick={() => openEdit(c)}
                     >
                       Edit
@@ -171,17 +172,21 @@ function AdminCategories() {
                 onChange={(e) => setName(e.target.value)}
               />
 
+              
               <input
-                type="file"
-                accept="image/*"
+                type="text"
+                placeholder="Enter Image URL"
+                value={image}
                 onChange={(e) => {
-                  const file = e.target.files[0];
-                  setImage(file);
-                  setPreview(URL.createObjectURL(file));
+                  setImage(e.target.value);
+                  setPreview(e.target.value);
                 }}
               />
 
-              {preview && <img src={preview} width="100" />}
+              
+              {preview && (
+                <img src={preview} width="100" />
+              )}
 
               <div className="modal-actions">
                 <button onClick={() => setShowModal(false)}>
