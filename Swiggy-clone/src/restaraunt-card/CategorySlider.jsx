@@ -136,7 +136,7 @@ function CategorySlider() {
           <div className="category-row" ref={scrollRef}>
             {categories.map((cat) => (
               <div className="category-card" key={cat._id}>
-                <img src={`${API}/${cat.image}`} alt={cat.name} />
+                <img src={cat.image} alt={cat.name} />
               </div>
             ))}
           </div>

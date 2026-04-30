@@ -43,10 +43,10 @@ router.post("/send-otp", async (req, res) => {
     });
 
     user.otp = otp;
-    user.otpExpires = Date.now() + 5 * 60 * 1000; // make it 5 min
+    user.otpExpires = Date.now() + 5 * 60 * 1000; 
     await user.save();
 
-    // ✅ Send email via Resend
+    
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: user.email,
